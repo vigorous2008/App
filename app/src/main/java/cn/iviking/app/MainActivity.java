@@ -1,14 +1,27 @@
 package cn.iviking.app;
 
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-import cn.iviking.app.jni.JNIUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import cn.iviking.app.jni.JNIUtils;
+import cn.iviking.app.audio.IvikingAudio;
 public class MainActivity extends AppCompatActivity {
+    PipedInputStream in;
+    boolean isRrcord;
+    IvikingAudio mm ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +39,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
         TextView tv = (TextView)findViewById(R.id.tv);
-        byte[] data = new byte[20];
-        tv.setText(new JNIUtils().getSymbol(data,"48000","2","3","4")+"  || "+new JNIUtils().getString());
+       // byte[] data = new byte[1024*1024];
+        InputStream inStream = getResources().openRawResource(R.raw.watermark);
+        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+        byte[] buff = new byte[100];
+        int rc = 0;
+        try {
+            while ((rc = inStream.read(buff, 0, 100)) > 0) {
+                swapStream.write(buff, 0, rc);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        byte[] data = swapStream.toByteArray();
+        String path = Environment.getDownloadCacheDirectory().getAbsolutePath();
+        tv.setText(new JNIUtils().getSymbol(data,"48000","2","3","4")+"  || "+new JNIUtils().getString()+path);
+
+
+
     }
 
     @Override
@@ -51,4 +80,29 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-}
+    public void btnclick(View v){
+        if (isRrcord){
+            isRrcord = false;
+            mm.stopRecord();
+        }else{
+            isRrcord = true;
+            startRecord();
+        }
+    }
+    private void startRecord() {
+        in = new PipedInputStream();
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    mm = new IvikingAudio(MainActivity.this, in);
+                    mm.StartAudioData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+     }
+    }

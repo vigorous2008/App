@@ -4,6 +4,7 @@
 #include <jni.h>
 
 #include "cn_iviking_app_jni_JNIUtils.h"
+#include "extmessage.h"
 
 
 #define SIZE 160 //SIZE x SIZE , default: 160 x 160
@@ -17,8 +18,9 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getString
 JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
         (JNIEnv *env, jobject obj, jbyteArray arr, jstring args1, jstring args2, jstring args3, jstring args4){
    // LOGD("btn_fftw_init()");
-
-    return (*env)->NewStringUTF(env, "btn_fftw_init");
-   // return (*env)->NewStringUTF(env,"I'm a String");
+    char * msg;
+    extmessage(arr,48000,1,msg);
+  //  return (*env)->NewStringUTF(env, msg);
+   return (*env)->NewStringUTF(env,"I'm a String");
 }
 
