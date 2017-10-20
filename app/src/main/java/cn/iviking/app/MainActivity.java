@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.util.Log;
 
 
 import java.io.ByteArrayOutputStream;
@@ -16,13 +18,15 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.util.Arrays;
+
 import cn.iviking.app.jni.JNIUtils;
 import cn.iviking.app.audio.IvikingAudio;
 public class MainActivity extends AppCompatActivity {
     PipedInputStream in;
     boolean isRrcord;
     IvikingAudio mm ;
-
+    Button button ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +42,11 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });*/
+       button = (Button)findViewById(R.id.startButton);
         TextView tv = (TextView)findViewById(R.id.tv);
        // byte[] data = new byte[1024*1024];
         InputStream inStream = getResources().openRawResource(R.raw.watermark);
+        Log.d("AAAA","读音频文件");
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         byte[] buff = new byte[100];
         int rc = 0;
@@ -52,11 +58,12 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         byte[] data = swapStream.toByteArray();
-        String path = Environment.getDownloadCacheDirectory().getAbsolutePath();
-        tv.setText(new JNIUtils().getSymbol(data,"48000","2","3","4")+"  || "+new JNIUtils().getString()+path);
-
-
-
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+        Log.d("AAAA path=",path);
+        Log.d("AAAA",String.format("pcm length %d",data.length) );
+        byte[] dataNoMeta = Arrays.copyOfRange(data,48,data.length-1);
+        tv.setText(new JNIUtils().getSymbol(dataNoMeta,"48000",dataNoMeta.length,"3","4")+"  || "+new JNIUtils().getString());
+        Log.d("AAAA","00000000000---0000000000");
     }
 
     @Override
@@ -80,12 +87,14 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void btnclick(View v){
+    public void onClick_Event(View v){
         if (isRrcord){
             isRrcord = false;
+            button.setText("START");
             mm.stopRecord();
         }else{
             isRrcord = true;
+            button.setText("STOP");
             startRecord();
         }
     }
