@@ -2,7 +2,7 @@
  * File: fft.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 19-Oct-2017 14:36:17
+ * C/C++ source code generated on  : 20-Oct-2017 14:06:37
  */
 
 #ifndef FFT_H
@@ -18,8 +18,7 @@
 #include "extmessage_types.h"
 
 /* Function Declarations */
-extern void b_fft(const emxArray_real_T *x, emxArray_creal_T *y);
-extern void fft(const double x[11], creal_T y[512]);
+extern void fft(const emxArray_real_T *x, emxArray_creal_T *y);
 
 #endif
 

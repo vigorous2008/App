@@ -2,7 +2,7 @@
  * File: extmessage.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 19-Oct-2017 14:36:17
+ * C/C++ source code generated on  : 20-Oct-2017 14:06:37
  */
 
 #ifndef EXTMESSAGE_H
@@ -18,7 +18,7 @@
 #include "extmessage_types.h"
 
 /* Function Declarations */
-extern void extmessage(const emxArray_real_T *data, double fs, double channel,
+extern void extmessage(const emxArray_real_T *data, int fs, int channel,
   emxArray_real_T *msg);
 
 #endif

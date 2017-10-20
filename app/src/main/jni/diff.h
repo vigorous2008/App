@@ -2,7 +2,7 @@
  * File: diff.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 19-Oct-2017 14:36:17
+ * C/C++ source code generated on  : 20-Oct-2017 14:06:37
  */
 
 #ifndef DIFF_H
@@ -18,6 +18,7 @@
 #include "extmessage_types.h"
 
 /* Function Declarations */
+extern void b_diff(const emxArray_real_T *x, emxArray_real_T *y);
 extern void diff(const emxArray_real_T *x, emxArray_real_T *y);
 
 #endif

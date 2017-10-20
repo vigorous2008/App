@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         Log.d("AAAA path=",path);
         Log.d("AAAA",String.format("pcm length %d",data.length) );
-        byte[] dataNoMeta = Arrays.copyOfRange(data,48,data.length-1);
-        tv.setText(new JNIUtils().getSymbol(dataNoMeta,"48000",dataNoMeta.length,"3","4")+"  || "+new JNIUtils().getString());
+       // byte[] dataNoMeta = Arrays.copyOfRange(data,48,data.length-1);
+        tv.setText(new JNIUtils().getSymbol(data,"44100",data.length,"3","4")+"  || "+new JNIUtils().getString());
         Log.d("AAAA","00000000000---0000000000");
     }
 

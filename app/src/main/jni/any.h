@@ -1,12 +1,12 @@
 /*
- * File: hilbert.h
+ * File: any.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 19-Oct-2017 14:36:17
+ * C/C++ source code generated on  : 20-Oct-2017 14:06:37
  */
 
-#ifndef HILBERT_H
-#define HILBERT_H
+#ifndef ANY_H
+#define ANY_H
 
 /* Include Files */
 #include <math.h>
@@ -18,12 +18,12 @@
 #include "extmessage_types.h"
 
 /* Function Declarations */
-extern void hilbert(const emxArray_real_T *xr, emxArray_creal_T *x);
+extern boolean_T any(const emxArray_boolean_T *x);
 
 #endif
 
 /*
- * File trailer for hilbert.h
+ * File trailer for any.h
  *
  * [EOF]
  */

@@ -1,12 +1,12 @@
 /*
- * File: log10.h
+ * File: filter.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 19-Oct-2017 14:36:17
+ * C/C++ source code generated on  : 20-Oct-2017 14:06:37
  */
 
-#ifndef LOG10_H
-#define LOG10_H
+#ifndef FILTER_H
+#define FILTER_H
 
 /* Include Files */
 #include <math.h>
@@ -18,12 +18,12 @@
 #include "extmessage_types.h"
 
 /* Function Declarations */
-extern void b_log10(const double x[256], double b_x[256]);
+extern void filter(const emxArray_real_T *x, emxArray_real_T *y);
 
 #endif
 
 /*
- * File trailer for log10.h
+ * File trailer for filter.h
  *
  * [EOF]
  */

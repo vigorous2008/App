@@ -7,7 +7,7 @@
 #include "extmessage.h"
 #include "extmessage_emxAPI.h"
 #include "extmessage_initialize.h"
-
+#include "math.h"
 #define LOG "liubox-jni"// 这个是自定义的LOG的标识  
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,LOG,__VA_ARGS__) // 定义LOGD类型  
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,LOG,__VA_ARGS__) // 定义LOGI类型  
@@ -18,6 +18,33 @@
 #define SIZE 160 //SIZE x SIZE , default: 160 x 160
 #define N 4096
 
+static emxArray_real_T *argInit_Unboundedx1_real_T(unsigned char * buf,int size)
+{
+    emxArray_real_T *result;
+    //static int iv0[1] = { size };
+
+    int idx0;
+
+    /* Set the size of the array.
+    Change this size to the value that the application requires. */
+    result = emxCreateND_real_T(1, &size);
+
+    /* Loop over the array to initialize each element. */
+    for (idx0 = 0; idx0 < result->size[0U]; idx0++) {
+        /* Set the value of the array element.
+        Change this value to the value that the application requires. */
+        result->data[idx0] = 0.0;
+    }
+    for (int i = 0; i < size/2; i++)
+    {
+        unsigned char bl = buf[2 * i];
+        unsigned char bh = buf[2 * i + 1];
+        short s= (short)((bh&0x00FF)<<8|bl&0x00FF);
+        result->data[i] = round((double)s*10000/32768)/10000;
+    }
+
+    return result;
+}
 JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getString
         (JNIEnv *env, jobject obj){
     return (*env)->NewStringUTF(env,"iviking jni test--ok");
@@ -28,13 +55,30 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
    // LOGD("btn_fftw_init()");
 
     extmessage_initialize();
-    emxArray_real_T* msg = emxCreate_real_T(600,1);
+    emxArray_real_T* msg;
+    emxInitArray_real_T(&msg, 2);
     jbyte *bytes = (*env)->GetByteArrayElements(env,arr,0);
-    emxArray_real_T *data = emxCreateWrapper_real_T((double*)bytes, args2/8/ (sizeof(double) / sizeof(char)), 1);
-    LOGI( "liuboxtest %d ",args2);
+
+    emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2-44);
+    //emxCreateWrapper_real_T((double*)buf, a / (sizeof(double) / sizeof(char)), 1);
     extmessage(data, 44100, 1, msg);
-    LOGI( "liuboxtest[ %s] returned ",msg);
+    unsigned char  ret[100];
+    for (int i =0;i<100;i++)
+        ret[i] = ret[i]&0x00;
+    for (int idx0 = 0; idx0 < msg->size[1]; idx0++) {
+        /* Set the value of the array element.
+        Change this value to the value that the application requires. */
+       // printf (" %f ",msg->data[idx0]);
+
+        if(msg->data[idx0] != 0)
+            ret[idx0/8] = ret[idx0/8] | 0x80>>(idx0%8);
+    }
+    for (int i =0;i<msg->size[1]/8;i++)
+    LOGI( "liuboxtest  returned: %x ",(int)ret[i]);
   //  return (*env)->NewStringUTF(env, msg);
    return (*env)->NewStringUTF(env,"I'm a String");
 }
+
+
+
 

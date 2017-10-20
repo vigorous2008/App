@@ -2,7 +2,7 @@
  * File: ifft.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 19-Oct-2017 14:36:17
+ * C/C++ source code generated on  : 20-Oct-2017 14:06:37
  */
 
 /* Include Files */
@@ -157,37 +157,28 @@ void get_algo_sizes(int n1, boolean_T useRadix2, int *N2blue, int *nRows)
   if (useRadix2) {
     *nRows = n1;
   } else {
-    if (n1 > 0) {
-      nn1m1 = (n1 + n1) - 1;
-      pmax = 31;
-      if (nn1m1 > MIN_int32_T) {
-        if (nn1m1 < 0) {
-          nn1m1 = -nn1m1;
-        }
-
-        if (nn1m1 <= 1) {
-          pmax = 0;
+    nn1m1 = (n1 + n1) - 1;
+    pmax = 31;
+    if (nn1m1 <= 1) {
+      pmax = 0;
+    } else {
+      pmin = 0;
+      exitg1 = false;
+      while ((!exitg1) && (pmax - pmin > 1)) {
+        p = (pmin + pmax) >> 1;
+        pow2p = 1 << p;
+        if (pow2p == nn1m1) {
+          pmax = p;
+          exitg1 = true;
+        } else if (pow2p > nn1m1) {
+          pmax = p;
         } else {
-          pmin = 0;
-          exitg1 = false;
-          while ((!exitg1) && (pmax - pmin > 1)) {
-            p = (pmin + pmax) >> 1;
-            pow2p = 1 << p;
-            if (pow2p == nn1m1) {
-              pmax = p;
-              exitg1 = true;
-            } else if (pow2p > nn1m1) {
-              pmax = p;
-            } else {
-              pmin = p;
-            }
-          }
+          pmin = p;
         }
       }
-
-      *N2blue = 1 << pmax;
     }
 
+    *N2blue = 1 << pmax;
     *nRows = *N2blue;
   }
 }
@@ -384,7 +375,7 @@ void ifft(const emxArray_creal_T *x, emxArray_creal_T *y)
 
       emxInit_creal_T(&fy, 1);
       emxInit_creal_T(&fv, 1);
-      r2br_r2dit_trig_impl(y, 0, N2blue, costab, sintab, fy);
+      r2br_r2dit_trig_impl(y, N2blue, costab, sintab, fy);
       r2br_r2dit_trig(wwc, N2blue, costab, sintab, fv);
       nInt2 = fy->size[0];
       emxEnsureCapacity((emxArray__common *)fy, nInt2, sizeof(creal_T));
@@ -570,16 +561,14 @@ void r2br_r2dit_trig(const emxArray_creal_T *x, int n1_unsigned, const
 
 /*
  * Arguments    : const emxArray_creal_T *x
- *                int xoffInit
  *                int unsigned_nRows
  *                const emxArray_real_T *costab
  *                const emxArray_real_T *sintab
  *                emxArray_creal_T *y
  * Return Type  : void
  */
-void r2br_r2dit_trig_impl(const emxArray_creal_T *x, int xoffInit, int
-  unsigned_nRows, const emxArray_real_T *costab, const emxArray_real_T *sintab,
-  emxArray_creal_T *y)
+void r2br_r2dit_trig_impl(const emxArray_creal_T *x, int unsigned_nRows, const
+  emxArray_real_T *costab, const emxArray_real_T *sintab, emxArray_creal_T *y)
 {
   int j;
   int nRowsD2;
@@ -616,7 +605,7 @@ void r2br_r2dit_trig_impl(const emxArray_creal_T *x, int xoffInit, int
     }
   }
 
-  ix = xoffInit;
+  ix = 0;
   ju = 0;
   iy = 0;
   for (i = 1; i < j; i++) {

@@ -2,7 +2,7 @@
  * File: extmessage_types.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 19-Oct-2017 14:36:17
+ * C/C++ source code generated on  : 20-Oct-2017 14:06:37
  */
 
 #ifndef EXTMESSAGE_TYPES_H
@@ -95,27 +95,6 @@ struct emxArray_int32_T
 typedef struct emxArray_int32_T emxArray_int32_T;
 
 #endif                                 /*typedef_emxArray_int32_T*/
-
-#ifndef struct_emxArray_int8_T
-#define struct_emxArray_int8_T
-
-struct emxArray_int8_T
-{
-  signed char *data;
-  int *size;
-  int allocatedSize;
-  int numDimensions;
-  boolean_T canFreeData;
-};
-
-#endif                                 /*struct_emxArray_int8_T*/
-
-#ifndef typedef_emxArray_int8_T
-#define typedef_emxArray_int8_T
-
-typedef struct emxArray_int8_T emxArray_int8_T;
-
-#endif                                 /*typedef_emxArray_int8_T*/
 
 #ifndef struct_emxArray_real_T
 #define struct_emxArray_real_T

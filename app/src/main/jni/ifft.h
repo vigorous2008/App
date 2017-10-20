@@ -2,7 +2,7 @@
  * File: ifft.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 19-Oct-2017 14:36:17
+ * C/C++ source code generated on  : 20-Oct-2017 14:06:37
  */
 
 #ifndef IFFT_H
@@ -24,9 +24,9 @@ extern void get_algo_sizes(int n1, boolean_T useRadix2, int *N2blue, int *nRows)
 extern void ifft(const emxArray_creal_T *x, emxArray_creal_T *y);
 extern void r2br_r2dit_trig(const emxArray_creal_T *x, int n1_unsigned, const
   emxArray_real_T *costab, const emxArray_real_T *sintab, emxArray_creal_T *y);
-extern void r2br_r2dit_trig_impl(const emxArray_creal_T *x, int xoffInit, int
-  unsigned_nRows, const emxArray_real_T *costab, const emxArray_real_T *sintab,
-  emxArray_creal_T *y);
+extern void r2br_r2dit_trig_impl(const emxArray_creal_T *x, int unsigned_nRows,
+  const emxArray_real_T *costab, const emxArray_real_T *sintab, emxArray_creal_T
+  *y);
 
 #endif
 
