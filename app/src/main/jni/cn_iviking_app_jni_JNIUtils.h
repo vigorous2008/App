@@ -21,7 +21,7 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getString
  * Signature: ([BLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
-  (JNIEnv *, jobject, jbyteArray, jstring, jstring, jstring, jstring);
+  (JNIEnv *, jobject, jbyteArray, jstring, jlong, jstring, jstring);
 
 #ifdef __cplusplus
 }
