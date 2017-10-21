@@ -18,7 +18,10 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,13 +33,14 @@ public class MainActivity extends AppCompatActivity {
     IvikingAudio mm ;
     Button button ;
     int off = 0;
+    TextView tv ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
        button = (Button)findViewById(R.id.startButton);
-        TextView tv = (TextView)findViewById(R.id.tv);
+       tv = (TextView)findViewById(R.id.tv);
        // byte[] data = new byte[1024*1024];
         InputStream inStream = getResources().openRawResource(R.raw.watermark);
         Log.d("AAAA","读音频文件");
@@ -54,9 +58,12 @@ public class MainActivity extends AppCompatActivity {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         Log.d("AAAA path=",path);
         Log.d("AAAA",String.format("pcm length %d",data.length) );
-        new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
-        // tv.setText(new JNIUtils().getSymbol(data,"44100",data.length,"3","4")+"  || "+new JNIUtils().getString());
+       /* byte[] byteArr = new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
+        String mark = new String(byteArr);
+        Log.d("mark String",mark);*/
+
         tv.setText(new JNIUtils().getString());
+       // tv.setText(new JNIUtils().getString());
         Log.d("AAAA","00000000000---0000000000");
     }
 
@@ -94,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void startRecord() {
         in = new PipedInputStream();
-
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         new Thread(new Runnable() {
 
             @Override
@@ -120,7 +127,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("timertask :  readBytes ",String.valueOf(size)+ " available: "+String.valueOf(s)
                             +" data.length:"+data.length);
 
-                    new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
+                    byte[] markArr = new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
+                    String mark = new String(markArr);
+                    Log.d("watermark from MIC",mark);
+
+                    tv.setText(df.format(new Date())+" "+mark);
+
                 } catch (IOException e) {
                     Log.e("timertask error :",e.getMessage());
                     e.printStackTrace();

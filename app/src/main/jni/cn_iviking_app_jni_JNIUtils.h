@@ -20,7 +20,7 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getString
  * Method:    getSymbol
  * Signature: ([BLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
+JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
   (JNIEnv *, jobject, jbyteArray, jstring, jlong, jstring, jstring);
 
 #ifdef __cplusplus

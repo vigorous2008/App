@@ -14,5 +14,5 @@ public class JNIUtils {
     public native String getString();
 
     //java调C中的方法都需要用native声明且方法名必须和c的方法名一样
-    public native String getSymbol(byte[] data, String sf, long p1, String p2,String p3);
+    public native byte[] getSymbol(byte[] data, String sf, long p1, String p2,String p3);
 }

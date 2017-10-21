@@ -8,6 +8,7 @@
 #include "extmessage_emxAPI.h"
 #include "extmessage_initialize.h"
 #include "math.h"
+#include <string.h>
 #define LOG "liubox-jni"// 这个是自定义的LOG的标识  
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,LOG,__VA_ARGS__) // 定义LOGD类型  
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,LOG,__VA_ARGS__) // 定义LOGI类型  
@@ -47,10 +48,10 @@ static emxArray_real_T *argInit_Unboundedx1_real_T(unsigned char * buf,int size)
 }
 JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getString
         (JNIEnv *env, jobject obj){
-    return (*env)->NewStringUTF(env,"iviking jni test--ok");
+    return (*env)->NewStringUTF(env,"IVIKING 水印测试");
 }
 
-JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
+JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
         (JNIEnv *env, jobject obj, jbyteArray arr, jstring args1, jlong args2, jstring args3, jstring args4){
    // LOGD("btn_fftw_init()");
     LOGI( "revcieve: %x ",args2);
@@ -76,14 +77,21 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
         if(msg->data[idx0] != 0)
             ret[idx0/8] = ret[idx0/8] | 0x80>>(idx0%8);
     }
+
+    jbyteArray array = (*env)->NewByteArray(env,msg->size[1]);
+
     for (int i =0;i<msg->size[1]/8;i++){
         LOGI( "liuboxtest  returned: %c ",ret[i]);
         //  return (*env)->NewStringUTF(env, msg);
         //LOGI( "String returned: %s ",ret[i]);
+       // strcat(mark,(char)ret[i]);
+
     }
+    //jstring deviceNum = env->NewStringUTF((const char*)devicenumber);
 
+    (*env)->SetByteArrayRegion(env,array,0,msg->size[1],ret);
 
-    return (*env)->NewStringUTF(env,"I'm a String");
+    return array;
 }
 
 
