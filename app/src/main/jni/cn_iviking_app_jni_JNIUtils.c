@@ -53,13 +53,16 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getString
 JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
         (JNIEnv *env, jobject obj, jbyteArray arr, jstring args1, jlong args2, jstring args3, jstring args4){
    // LOGD("btn_fftw_init()");
+    LOGI( "revcieve: %x ",args2);
 
     extmessage_initialize();
     emxArray_real_T* msg;
     emxInitArray_real_T(&msg, 2);
     jbyte *bytes = (*env)->GetByteArrayElements(env,arr,0);
 
-    emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2-44);
+   emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2-44);//音频文件数据，需要减去wav头
+    //   emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2);//音频流数据
+
     //emxCreateWrapper_real_T((double*)buf, a / (sizeof(double) / sizeof(char)), 1);
     extmessage(data, 44100, 1, msg);
     unsigned char  ret[100];
@@ -73,10 +76,14 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
         if(msg->data[idx0] != 0)
             ret[idx0/8] = ret[idx0/8] | 0x80>>(idx0%8);
     }
-    for (int i =0;i<msg->size[1]/8;i++)
-    LOGI( "liuboxtest  returned: %x ",(int)ret[i]);
-  //  return (*env)->NewStringUTF(env, msg);
-   return (*env)->NewStringUTF(env,"I'm a String");
+    for (int i =0;i<msg->size[1]/8;i++){
+        LOGI( "liuboxtest  returned: %c ",ret[i]);
+        //  return (*env)->NewStringUTF(env, msg);
+        //LOGI( "String returned: %s ",ret[i]);
+    }
+
+
+    return (*env)->NewStringUTF(env,"I'm a String");
 }
 
 

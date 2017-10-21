@@ -32,21 +32,23 @@ public class IvikingAudio {
     }
     public void StartAudioData(){//得到录音数据
         Log.d("audio:","开始录音......");
-        int frequency = 48000;
+        int frequency = 44100;
         //int channelConfiguration = AudioFormat.CHANNEL_CONFIGURATION_STEREO;
           int channelConfiguration = AudioFormat.CHANNEL_IN_MONO;
         int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
         int buffersize = AudioRecord.getMinBufferSize(frequency, channelConfiguration, audioEncoding);
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                 frequency, channelConfiguration, audioEncoding, buffersize);
+        Log.d("audio:","开始录音......bufferSize:"+buffersize);
         byte[]buffer  = new byte[buffersize];
         audioRecord.startRecording();//开始录音
         isRecording = true;
-        int bufferReadSize = 1024;
+        //int bufferReadSize = 1024;
         while (isRecording){
-            audioRecord.read(buffer, 0, bufferReadSize);
+            int bufferReadResult = audioRecord.read(buffer, 0, buffer.length);
+            Log.d("audio:","录音机.读取数据字节数...bufferReadResult:"+bufferReadResult);
             try {
-                outstream.write(buffer, 0, bufferReadSize);
+                outstream.write(buffer, 0, buffer.length);
             } catch (IOException e) {
                 Log.d("audio:","录音出错了");
                 e.printStackTrace();

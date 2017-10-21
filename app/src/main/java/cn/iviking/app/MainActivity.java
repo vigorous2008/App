@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.iviking.app.jni.JNIUtils;
 import cn.iviking.app.audio.IvikingAudio;
@@ -27,21 +29,12 @@ public class MainActivity extends AppCompatActivity {
     boolean isRrcord;
     IvikingAudio mm ;
     Button button ;
+    int off = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
 
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
        button = (Button)findViewById(R.id.startButton);
         TextView tv = (TextView)findViewById(R.id.tv);
        // byte[] data = new byte[1024*1024];
@@ -61,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         Log.d("AAAA path=",path);
         Log.d("AAAA",String.format("pcm length %d",data.length) );
-       // byte[] dataNoMeta = Arrays.copyOfRange(data,48,data.length-1);
-        tv.setText(new JNIUtils().getSymbol(data,"44100",data.length,"3","4")+"  || "+new JNIUtils().getString());
+        new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
+        // tv.setText(new JNIUtils().getSymbol(data,"44100",data.length,"3","4")+"  || "+new JNIUtils().getString());
+        tv.setText(new JNIUtils().getString());
         Log.d("AAAA","00000000000---0000000000");
     }
 
@@ -100,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void startRecord() {
         in = new PipedInputStream();
+
         new Thread(new Runnable() {
 
             @Override
@@ -112,6 +107,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    Log.d("timertask  available:  ",String.valueOf(in.available()));
+                    int s = in.available();
+                    byte[] data = new byte[s];;
+                    int size =in.read(data,off,s);
 
+                    Log.d("timertask :  readBytes ",String.valueOf(size)+ " available: "+String.valueOf(s)
+                            +" data.length:"+data.length);
+
+                    new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
+                } catch (IOException e) {
+                    Log.e("timertask error :",e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }, 5000, 5000);
      }
     }
