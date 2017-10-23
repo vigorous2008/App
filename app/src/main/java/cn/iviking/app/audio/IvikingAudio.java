@@ -28,10 +28,11 @@ public class IvikingAudio {
         this.context  = context;
         //初始化管道流 用于向外传输数据
         outstream = new PipedOutputStream();
-        outstream.connect(instream);
+       // outstream.connect(instream);
+        instream.connect(outstream);
     }
     public void StartAudioData(){//得到录音数据
-        Log.d("audio:","开始录音......");
+        Log.i("audio:","开始录音......");
         int frequency = 44100;
         //int channelConfiguration = AudioFormat.CHANNEL_CONFIGURATION_STEREO;
           int channelConfiguration = AudioFormat.CHANNEL_IN_MONO;
@@ -39,18 +40,18 @@ public class IvikingAudio {
         int buffersize = AudioRecord.getMinBufferSize(frequency, channelConfiguration, audioEncoding);
         audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC,
                 frequency, channelConfiguration, audioEncoding, buffersize);
-        Log.d("audio:","开始录音......bufferSize:"+buffersize);
+        Log.i("audio:","开始录音......bufferSize:"+buffersize);
         byte[]buffer  = new byte[buffersize];
         audioRecord.startRecording();//开始录音
         isRecording = true;
         //int bufferReadSize = 1024;
         while (isRecording){
             int bufferReadResult = audioRecord.read(buffer, 0, buffer.length);
-            Log.d("audio:","录音机.读取数据字节数...bufferReadResult:"+bufferReadResult);
+            Log.i("audio:","录音机.读取数据字节数...bufferReadResult:"+bufferReadResult);
             try {
                 outstream.write(buffer, 0, buffer.length);
             } catch (IOException e) {
-                Log.d("audio:","录音出错了");
+                Log.e("audio:","录音出错了");
                 e.printStackTrace();
             }
         }

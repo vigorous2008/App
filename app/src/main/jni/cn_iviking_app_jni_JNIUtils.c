@@ -54,7 +54,7 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getString
 JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
         (JNIEnv *env, jobject obj, jbyteArray arr, jstring args1, jlong args2, jstring args3, jstring args4){
    // LOGD("btn_fftw_init()");
-    LOGI( "revcieve: %x ",args2);
+    LOGI( "revcieve: %d ",args2);
 
     extmessage_initialize();
     emxArray_real_T* msg;
@@ -72,7 +72,7 @@ JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
     for (int idx0 = 0; idx0 < msg->size[1]; idx0++) {
         /* Set the value of the array element.
         Change this value to the value that the application requires. */
-       // printf (" %f ",msg->data[idx0]);
+        LOGI (" AUDIO--- %f ",msg->data[idx0]);
 
         if(msg->data[idx0] != 0)
             ret[idx0/8] = ret[idx0/8] | 0x80>>(idx0%8);

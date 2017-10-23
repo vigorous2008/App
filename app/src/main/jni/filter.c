@@ -2,7 +2,7 @@
  * File: filter.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 20-Oct-2017 14:06:37
+ * C/C++ source code generated on  : 23-Oct-2017 13:29:03
  */
 
 /* Include Files */
@@ -40,15 +40,15 @@ void filter(const emxArray_real_T *x, emxArray_real_T *y)
     y->data[nx_m_nb] = 0.0;
   }
 
-  if (x->size[0] >= 1198) {
-    for (k = 0; k < 599; k++) {
+  if (x->size[0] >= 1598) {
+    for (k = 0; k < 799; k++) {
       for (j = k; j + 1 <= nx; j++) {
-        y->data[j] += 0.0016694490818030051 * x->data[j - k];
+        y->data[j] += 0.0012515644555694619 * x->data[j - k];
       }
     }
   } else {
-    if (x->size[0] > 599) {
-      nx_m_nb = x->size[0] - 599;
+    if (x->size[0] > 799) {
+      nx_m_nb = x->size[0] - 799;
     } else {
       nx_m_nb = 0;
     }
@@ -56,8 +56,8 @@ void filter(const emxArray_real_T *x, emxArray_real_T *y)
     jp = -1;
     for (k = 1; k <= nx_m_nb; k++) {
       jp++;
-      for (j = 0; j < 599; j++) {
-        y->data[jp + j] += x->data[jp] * 0.0016694490818030051;
+      for (j = 0; j < 799; j++) {
+        y->data[jp + j] += x->data[jp] * 0.0012515644555694619;
       }
     }
 
@@ -65,7 +65,7 @@ void filter(const emxArray_real_T *x, emxArray_real_T *y)
     for (k = nx_m_nb + 1; k <= nx; k++) {
       jp++;
       for (j = 0; j + 1 <= naxpy; j++) {
-        y->data[jp + j] += x->data[jp] * 0.0016694490818030051;
+        y->data[jp + j] += x->data[jp] * 0.0012515644555694619;
       }
 
       naxpy--;

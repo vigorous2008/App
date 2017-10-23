@@ -2,7 +2,7 @@
 ## Makefile generated for MATLAB file/project 'extmessage'. 
 ## 
 ## Makefile     : extmessage_rtw.mk
-## Generated on : Fri Oct 20 14:07:24 2017
+## Generated on : Mon Oct 23 13:29:36 2017
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
@@ -26,7 +26,7 @@ MAKEFILE                  = extmessage_rtw.mk
 COMPUTER                  = PCWIN64
 MATLAB_ROOT               = C:\PROGRA~1\MATLAB\R2017a
 MATLAB_BIN                = C:\PROGRA~1\MATLAB\R2017a\bin
-MATLAB_ARCH_BIN           = C:\PROGRA~1\MATLAB\R2017a\binwin64
+MATLAB_ARCH_BIN           = C:\PROGRA~1\MATLAB\R2017a\binglnxa64
 MASTER_ANCHOR_DIR         = 
 START_DIR                 = D:\matlab_m\1
 ARCH                      = win64
@@ -38,7 +38,7 @@ CPP_STANDARD_OPTS         =
 ## TOOLCHAIN SPECIFICATIONS
 ###########################################################################
 
-# Toolchain Name:          QuestaSim_Win64 v1.0 | nmake (64-bit Windows)
+# Toolchain Name:          QuestaSim_Linux\Incisive v1.0 | gmake (64-bit Linux)
 # Supported Version(s):    1.0
 # ToolchainInfo Version:   R2017a
 # Specification Revision:  1.0
@@ -76,7 +76,7 @@ DOWNLOAD =
 # Execute: Execute
 EXECUTE = $(PRODUCT)
 
-# Builder: NMAKE Utility
+# Builder: GMAKE Utility
 MAKE = echo "### Successfully generated all binary outputs."
 
 
@@ -134,7 +134,7 @@ CPP_EXT             = .cpp
 EXE_EXT             =
 SHAREDLIB_EXT       = .so
 STATICLIB_EXT       = .a
-MEX_EXT             = .mexw64
+MEX_EXT             = .mexa64
 MAKE_EXT            = .do
 
 
@@ -150,7 +150,7 @@ BUILD_TYPE = "Static Library"
 ## INCLUDE PATHS
 ###########################################################################
 
-INCLUDES_BUILDINFO = $(START_DIR)codegenlibextmessage;$(START_DIR);$(MATLAB_ROOT)externinclude;$(MATLAB_ROOT)simulinkinclude;$(MATLAB_ROOT)rtwcsrc;$(MATLAB_ROOT)rtwcsrcext_modecommon;$(MATLAB_ROOT)rtwcert
+INCLUDES_BUILDINFO = -ccflags$(START_DIR)codegenlibextmessage -ccflags$(START_DIR) -ccflags$(MATLAB_ROOT)externinclude -ccflags$(MATLAB_ROOT)simulinkinclude -ccflags$(MATLAB_ROOT)rtwcsrc -ccflags$(MATLAB_ROOT)rtwcsrcext_modecommon -ccflags$(MATLAB_ROOT)rtwcert
 
 INCLUDES = 
 
@@ -166,7 +166,7 @@ DEFINES =
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(START_DIR)codegenlibextmessageextmessage_initialize.c $(START_DIR)codegenlibextmessageextmessage_terminate.c $(START_DIR)codegenlibextmessageextmessage.c $(START_DIR)codegenlibextmessagefft.c $(START_DIR)codegenlibextmessagefilter.c $(START_DIR)codegenlibextmessageifft.c $(START_DIR)codegenlibextmessagelx_smooth.c $(START_DIR)codegenlibextmessagediff.c $(START_DIR)codegenlibextmessageany.c $(START_DIR)codegenlibextmessagenullAssignment.c $(START_DIR)codegenlibextmessageextmessage_emxutil.c $(START_DIR)codegenlibextmessageextmessage_emxAPI.c $(START_DIR)codegenlibextmessagert_nonfinite.c $(START_DIR)codegenlibextmessagertGetNaN.c $(START_DIR)codegenlibextmessagertGetInf.c
+SRCS = $(START_DIR)codegenlibextmessageextmessage_initialize.c $(START_DIR)codegenlibextmessageextmessage_terminate.c $(START_DIR)codegenlibextmessageextmessage.c $(START_DIR)codegenlibextmessagehighp.c $(START_DIR)codegenlibextmessagefft.c $(START_DIR)codegenlibextmessagefilter.c $(START_DIR)codegenlibextmessageifft.c $(START_DIR)codegenlibextmessagelx_smooth.c $(START_DIR)codegenlibextmessagediff.c $(START_DIR)codegenlibextmessageany.c $(START_DIR)codegenlibextmessagefilterpointer.c $(START_DIR)codegenlibextmessageextmessage_emxutil.c $(START_DIR)codegenlibextmessageextmessage_emxAPI.c $(START_DIR)codegenlibextmessagert_nonfinite.c $(START_DIR)codegenlibextmessagertGetNaN.c $(START_DIR)codegenlibextmessagertGetInf.c
 
 ALL_SRCS = 
 
@@ -174,7 +174,7 @@ ALL_SRCS =
 ## OBJECTS
 ###########################################################################
 
-OBJS = extmessage_initialize.o extmessage_terminate.o extmessage.o fft.o filter.o ifft.o lx_smooth.o diff.o any.o nullAssignment.o extmessage_emxutil.o extmessage_emxAPI.o rt_nonfinite.o rtGetNaN.o rtGetInf.o
+OBJS = extmessage_initialize.o extmessage_terminate.o extmessage.o highp.o fft.o filter.o ifft.o lx_smooth.o diff.o any.o filterpointer.o extmessage_emxutil.o extmessage_emxAPI.o rt_nonfinite.o rtGetNaN.o rtGetInf.o
 
 ALL_OBJS = 
 
@@ -204,17 +204,17 @@ SYSTEM_LIBS =
 # C Compiler
 #---------------
 
-CFLAGS_BASIC = $(DEFINES) 
+CFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 
-CFLAGS =  
+CFLAGS += 
 
 #-----------------
 # C++ Compiler
 #-----------------
 
-CPPFLAGS_BASIC = $(DEFINES) 
+CPPFLAGS_BASIC = $(DEFINES) $(INCLUDES)
 
-CPPFLAGS =  
+CPPFLAGS += 
 
 ###########################################################################
 ## INLINED COMMANDS
@@ -224,14 +224,14 @@ CPPFLAGS =
 ## PHONY TARGETS
 ###########################################################################
 
-.PHONY : all build clean info prebuild download execute set_environment_variables
+.PHONY : all build clean info prebuild download execute
 
 
 all : build
-	@cmd /C " ### Successfully generated all binary outputs."
+	 "### Successfully generated all binary outputs."
 
 
-build : set_environment_variables prebuild 
+build : prebuild 
 
 
 prebuild : 
@@ -243,11 +243,6 @@ download : build
 execute : download
 
 
-set_environment_variables : 
-	@set INCLUDE=$(INCLUDES);$(INCLUDE)
-	@set LIB=$(LIB)
-
-
 ###########################################################################
 ## FINAL TARGET
 ###########################################################################
@@ -257,9 +252,9 @@ set_environment_variables :
 #---------------------------------
 
  :  
-	@cmd /C " ### Creating static library "" ..."
-	    $(subst ,\,$(subst ,\,))
-	@cmd /C " ### Created: "
+	 "### Creating static library "" ..."
+	    $(subst ,/,$(subst ,/,))
+	 "### Created: "
 
 
 ###########################################################################
@@ -270,96 +265,100 @@ set_environment_variables :
 # SOURCE-TO-OBJECT
 #---------------------
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+%.o : %.c
+	   "$@" $(subst ,/,"$<")
 
 
-.cpp.o :
-	  -o "$@" $(subst ,\,"$<")
+%.o : %.cpp
+	  -o "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+%.o : $(START_DIR)%.c
+	   "$@" $(subst ,/,"$<")
 
 
-.cpp.o :
-	  -o "$@" $(subst ,\,"$<")
+%.o : $(START_DIR)%.cpp
+	  -o "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+%.o : $(START_DIR)codegenlibextmessage%.c
+	   "$@" $(subst ,/,"$<")
 
 
-.cpp.o :
-	  -o "$@" $(subst ,\,"$<")
+%.o : $(START_DIR)codegenlibextmessage%.cpp
+	  -o "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+%.o : $(MATLAB_ROOT)rtwcsrc%.c
+	   "$@" $(subst ,/,"$<")
 
 
-.cpp.o :
-	  -o "$@" $(subst ,\,"$<")
+%.o : $(MATLAB_ROOT)rtwcsrc%.cpp
+	  -o "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+extmessage_initialize.o : $(START_DIR)codegenlibextmessageextmessage_initialize.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+extmessage_terminate.o : $(START_DIR)codegenlibextmessageextmessage_terminate.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+extmessage.o : $(START_DIR)codegenlibextmessageextmessage.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+highp.o : $(START_DIR)codegenlibextmessagehighp.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+fft.o : $(START_DIR)codegenlibextmessagefft.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+filter.o : $(START_DIR)codegenlibextmessagefilter.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+ifft.o : $(START_DIR)codegenlibextmessageifft.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+lx_smooth.o : $(START_DIR)codegenlibextmessagelx_smooth.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+diff.o : $(START_DIR)codegenlibextmessagediff.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+any.o : $(START_DIR)codegenlibextmessageany.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+filterpointer.o : $(START_DIR)codegenlibextmessagefilterpointer.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+extmessage_emxutil.o : $(START_DIR)codegenlibextmessageextmessage_emxutil.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+extmessage_emxAPI.o : $(START_DIR)codegenlibextmessageextmessage_emxAPI.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+rt_nonfinite.o : $(START_DIR)codegenlibextmessagert_nonfinite.c
+	   "$@" $(subst ,/,"$<")
 
 
-.c.o :
-	   "$@" $(subst ,\,"$<")
+rtGetNaN.o : $(START_DIR)codegenlibextmessagertGetNaN.c
+	   "$@" $(subst ,/,"$<")
+
+
+rtGetInf.o : $(START_DIR)codegenlibextmessagertGetInf.c
+	   "$@" $(subst ,/,"$<")
 
 
 ###########################################################################
@@ -374,37 +373,37 @@ set_environment_variables :
 ###########################################################################
 
 info : 
-	@cmd /C " ### PRODUCT = "
-	@cmd /C " ### PRODUCT_TYPE = "
-	@cmd /C " ### BUILD_TYPE = "
-	@cmd /C " ### INCLUDES = "
-	@cmd /C " ### DEFINES = "
-	@cmd /C " ### ALL_SRCS = "
-	@cmd /C " ### ALL_OBJS = "
-	@cmd /C " ### LIBS = "
-	@cmd /C " ### MODELREF_LIBS = "
-	@cmd /C " ### SYSTEM_LIBS = "
-	@cmd /C " ### TOOLCHAIN_LIBS = "
-	@cmd /C " ### CFLAGS = "
-	@cmd /C " ### LDFLAGS = "
-	@cmd /C " ### SHAREDLIB_LDFLAGS = "
-	@cmd /C " ### CPPFLAGS = "
-	@cmd /C " ### CPP_LDFLAGS = "
-	@cmd /C " ### CPP_SHAREDLIB_LDFLAGS = "
-	@cmd /C " ### ARFLAGS = "
-	@cmd /C " ### MEX_CFLAGS = "
-	@cmd /C " ### MEX_CPPFLAGS = "
-	@cmd /C " ### MEX_LDFLAGS = "
-	@cmd /C " ### MEX_CPPLDFLAGS = "
-	@cmd /C " ### DOWNLOAD_FLAGS = "
-	@cmd /C " ### EXECUTE_FLAGS = "
-	@cmd /C " ### MAKE_FLAGS = "
+	 "### PRODUCT = "
+	 "### PRODUCT_TYPE = "
+	 "### BUILD_TYPE = "
+	 "### INCLUDES = "
+	 "### DEFINES = "
+	 "### ALL_SRCS = "
+	 "### ALL_OBJS = "
+	 "### LIBS = "
+	 "### MODELREF_LIBS = "
+	 "### SYSTEM_LIBS = "
+	 "### TOOLCHAIN_LIBS = "
+	 "### CFLAGS = "
+	 "### LDFLAGS = "
+	 "### SHAREDLIB_LDFLAGS = "
+	 "### CPPFLAGS = "
+	 "### CPP_LDFLAGS = "
+	 "### CPP_SHAREDLIB_LDFLAGS = "
+	 "### ARFLAGS = "
+	 "### MEX_CFLAGS = "
+	 "### MEX_CPPFLAGS = "
+	 "### MEX_LDFLAGS = "
+	 "### MEX_CPPLDFLAGS = "
+	 "### DOWNLOAD_FLAGS = "
+	 "### EXECUTE_FLAGS = "
+	 "### MAKE_FLAGS = "
 
 
 clean : 
 	 "### Deleting all derived files..."
-	@if exist   
-	 
+	 $(subst /,\,)
+	 $(subst /,\,)
 	 "### Deleted all derived files."
 
 

@@ -2,7 +2,7 @@
  * File: lx_smooth.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 20-Oct-2017 14:06:37
+ * C/C++ source code generated on  : 23-Oct-2017 13:29:03
  */
 
 #ifndef LX_SMOOTH_H
@@ -18,7 +18,8 @@
 #include "extmessage_types.h"
 
 /* Function Declarations */
-extern void lx_smooth(const emxArray_real_T *varargin_1, emxArray_real_T *c);
+extern void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
+                   span_data[], emxArray_real_T *c);
 
 #endif
 

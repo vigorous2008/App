@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
        tv = (TextView)findViewById(R.id.tv);
        // byte[] data = new byte[1024*1024];
         /*InputStream inStream = getResources().openRawResource(R.raw.watermark);
-        Log.d("AAAA","读音频文件");
+        Log.i("AAAA","读音频文件");
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         byte[] buff = new byte[100];
         int rc = 0;
@@ -60,19 +60,24 @@ public class MainActivity extends AppCompatActivity {
         }
         byte[] data = swapStream.toByteArray();
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        Log.d("AAAA path=",path);
-        Log.d("AAAA",String.format("pcm length %d",data.length) );
+        Log.i("AAAA path=",path);
+        Log.i("AAAA",String.format("pcm length %d",data.length) );
         byte[] byteArr = new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
-        String mark = new String(byteArr);
-        Log.d("mark String",mark);*/
+        String mark = "";
+        for(int a=0;a<byteArr.length;a++){
+            Log.i("watermark in bit",String.valueOf(byteArr[a]));
+            mark+= String.format(" %x",byteArr[a]);
+        }
 
+        Log.i("mark String",mark);
+
+        tv.setText(mark);*/
         tv.setText(new JNIUtils().getString());
-       // tv.setText(new JNIUtils().getString());
-        Log.d("AAAA","00000000000---0000000000");
+        Log.i("AAAA","00000000000---0000000000");
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
-                Log.d("CallBack: ",msg.getData().getCharSequence("Data").toString());
+                Log.i("CallBack: ",msg.getData().getCharSequence("Data").toString());
                 tv.setText(msg.getData().getCharSequence("Data"))    ;
             }
         };
@@ -126,40 +131,42 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    Log.d("timertask  available:  ",String.valueOf(in.available()));
-                    int s = in.available();
-                    byte[] data = new byte[s];;
-                    int size =in.read(data,off,s);
 
-                    Log.i("timertask :  readBytes ",String.valueOf(size)+ " available: "+String.valueOf(s)
-                            +" data.length:"+data.length);
+        int len = 0;
+        int pos = 0;
+        final int BUFFER_SIZE = 44100*2*3;
+        byte[] data = new byte[BUFFER_SIZE];
 
+        while (true){
+            try{
+                if(pos+len<BUFFER_SIZE){
+                    len =in.read(data,pos+len,in.available());
+                    pos = pos +len;
+                    Log.i("data from mic",String.valueOf(len));
+                }else{
                     byte[] markArr = new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
-                    String mark = new String(markArr);
-                    Log.i("watermark from MIC",mark);
+                    String hols="";
+                    Log.i("watermark from MIC",new String(markArr));
                     for(int a=0;a<markArr.length;a++){
                         Log.i("watermark in bit",String.valueOf(markArr[a]));
+                        hols+= String.format(" %x",markArr[a]);
                     }
 
-                   // tv.setText(df.format(new Date())+" "+mark);
+                    // tv.setText(df.format(new Date())+" "+mark);
                     Message msg = new Message();
                     msg.setTarget(handler);
                     Bundle mBundle = new Bundle();
-                    mBundle.putString("Data", df.format(new Date())+ mark);//压入数据
+                    mBundle.putString("Data", df.format(new Date())+hols);//压入数据
                     msg.setData(mBundle);
                     handler.sendMessage(msg);
-
-
-                } catch (IOException e) {
-                    Log.e("timertask error :",e.getMessage());
-                    e.printStackTrace();
+                    pos = 0;
+                    data = new byte[BUFFER_SIZE];
                 }
+
+            }catch (Exception e){
+                e.printStackTrace();
             }
-        }, 5000, 5000);
+
+        }
      }
     }

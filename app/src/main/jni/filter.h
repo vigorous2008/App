@@ -2,7 +2,7 @@
  * File: filter.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 20-Oct-2017 14:06:37
+ * C/C++ source code generated on  : 23-Oct-2017 13:29:03
  */
 
 #ifndef FILTER_H
