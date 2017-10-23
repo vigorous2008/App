@@ -54,6 +54,7 @@ public class IvikingAudio {
                 e.printStackTrace();
             }
         }
+
     }
     public void stopRecord(){//停止录音
         isRecording = false;
@@ -61,7 +62,8 @@ public class IvikingAudio {
         try {
             outstream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("audio ",e.getMessage());
+           // e.printStackTrace();
         }
     }
 

@@ -61,8 +61,8 @@ JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
     emxInitArray_real_T(&msg, 2);
     jbyte *bytes = (*env)->GetByteArrayElements(env,arr,0);
 
-   emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2-44);//音频文件数据，需要减去wav头
-    //   emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2);//音频流数据
+    //     emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2-44);//音频文件数据，需要减去wav头
+    emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2);//音频流数据
 
     //emxCreateWrapper_real_T((double*)buf, a / (sizeof(double) / sizeof(char)), 1);
     extmessage(data, 44100, 1, msg);

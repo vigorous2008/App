@@ -3,6 +3,8 @@ package cn.iviking.app;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     Button button ;
     int off = 0;
     TextView tv ;
+    Handler handler;
+    Timer timer ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
        button = (Button)findViewById(R.id.startButton);
        tv = (TextView)findViewById(R.id.tv);
        // byte[] data = new byte[1024*1024];
-        InputStream inStream = getResources().openRawResource(R.raw.watermark);
+        /*InputStream inStream = getResources().openRawResource(R.raw.watermark);
         Log.d("AAAA","读音频文件");
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         byte[] buff = new byte[100];
@@ -58,13 +62,20 @@ public class MainActivity extends AppCompatActivity {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         Log.d("AAAA path=",path);
         Log.d("AAAA",String.format("pcm length %d",data.length) );
-       /* byte[] byteArr = new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
+        byte[] byteArr = new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
         String mark = new String(byteArr);
         Log.d("mark String",mark);*/
 
         tv.setText(new JNIUtils().getString());
        // tv.setText(new JNIUtils().getString());
         Log.d("AAAA","00000000000---0000000000");
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                Log.d("CallBack: ",msg.getData().getCharSequence("Data").toString());
+                tv.setText(msg.getData().getCharSequence("Data"))    ;
+            }
+        };
     }
 
     @Override
@@ -93,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
             isRrcord = false;
             button.setText("START");
             mm.stopRecord();
+            timer.cancel();
         }else{
             isRrcord = true;
             button.setText("STOP");
@@ -114,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
-        Timer timer = new Timer();
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -124,14 +136,24 @@ public class MainActivity extends AppCompatActivity {
                     byte[] data = new byte[s];;
                     int size =in.read(data,off,s);
 
-                    Log.d("timertask :  readBytes ",String.valueOf(size)+ " available: "+String.valueOf(s)
+                    Log.i("timertask :  readBytes ",String.valueOf(size)+ " available: "+String.valueOf(s)
                             +" data.length:"+data.length);
 
                     byte[] markArr = new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
                     String mark = new String(markArr);
-                    Log.d("watermark from MIC",mark);
+                    Log.i("watermark from MIC",mark);
+                    for(int a=0;a<markArr.length;a++){
+                        Log.i("watermark in bit",String.valueOf(markArr[a]));
+                    }
 
-                    tv.setText(df.format(new Date())+" "+mark);
+                   // tv.setText(df.format(new Date())+" "+mark);
+                    Message msg = new Message();
+                    msg.setTarget(handler);
+                    Bundle mBundle = new Bundle();
+                    mBundle.putString("Data", df.format(new Date())+ mark);//压入数据
+                    msg.setData(mBundle);
+                    handler.sendMessage(msg);
+
 
                 } catch (IOException e) {
                     Log.e("timertask error :",e.getMessage());
