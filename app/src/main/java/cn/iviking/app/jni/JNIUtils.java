@@ -7,12 +7,22 @@ package cn.iviking.app.jni;
 public class JNIUtils {
     static {
        System.loadLibrary("watermark");
-//        System.loadLibrary("FFTW");
     }
 
-    //java调C中的方法都需要用native声明且方法名必须和 c的方法名 一样
+    /**
+     * 用于测试
+     * @return 返回字符串 "IVIKING"
+     */
     public native String getString();
 
-    //java调C中的方法都需要用native声明且方法名必须和c的方法名一样
-    public native byte[] getSymbol(byte[] data, String sf, long p1, String p2,String p3);
+    /**
+     * @param audioData 音频PCM数据
+     * @param sf 采样率
+     * @param length 数据长度
+     * @param p2 扩展参数
+     * @param p3 扩展参数
+     * @return 返回音频数据中提取出的水印
+     */
+
+    public native byte[] getSymbol(byte[] audioData, long sf, long length, String p2,String p3);
 }

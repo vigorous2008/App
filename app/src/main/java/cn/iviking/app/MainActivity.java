@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     pos = pos +len;
                     Log.i("data from mic",String.valueOf(len));
                 }else{
-                    byte[] markArr = new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
+                    byte[] markArr = new JNIUtils().getSymbol(data,44100,data.length,"3","4");
                     String hols="";
                     Log.i("watermark from MIC",new String(markArr));
                     for(int a=0;a<markArr.length;a++){
