@@ -4,7 +4,7 @@ package cn.iviking.app.jni;
  * Created by wangzhongqiang on 2017/10/17.
  */
 
-public class JNIUtils {
+public class Detector {
     static {
        System.loadLibrary("watermark");
     }

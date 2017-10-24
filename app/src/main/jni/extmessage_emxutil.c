@@ -2,7 +2,7 @@
  * File: extmessage_emxutil.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 23-Oct-2017 13:29:03
+ * C/C++ source code generated on  : 24-Oct-2017 11:07:21
  */
 
 /* Include Files */
@@ -76,6 +76,23 @@ void emxFree_boolean_T(emxArray_boolean_T **pEmxArray)
     free((void *)(*pEmxArray)->size);
     free((void *)*pEmxArray);
     *pEmxArray = (emxArray_boolean_T *)NULL;
+  }
+}
+
+/*
+ * Arguments    : emxArray_char_T **pEmxArray
+ * Return Type  : void
+ */
+void emxFree_char_T(emxArray_char_T **pEmxArray)
+{
+  if (*pEmxArray != (emxArray_char_T *)NULL) {
+    if (((*pEmxArray)->data != (char *)NULL) && (*pEmxArray)->canFreeData) {
+      free((void *)(*pEmxArray)->data);
+    }
+
+    free((void *)(*pEmxArray)->size);
+    free((void *)*pEmxArray);
+    *pEmxArray = (emxArray_char_T *)NULL;
   }
 }
 
@@ -181,6 +198,27 @@ void emxInit_boolean_T1(emxArray_boolean_T **pEmxArray, int numDimensions)
   *pEmxArray = (emxArray_boolean_T *)malloc(sizeof(emxArray_boolean_T));
   emxArray = *pEmxArray;
   emxArray->data = (boolean_T *)NULL;
+  emxArray->numDimensions = numDimensions;
+  emxArray->size = (int *)malloc((unsigned int)(sizeof(int) * numDimensions));
+  emxArray->allocatedSize = 0;
+  emxArray->canFreeData = true;
+  for (i = 0; i < numDimensions; i++) {
+    emxArray->size[i] = 0;
+  }
+}
+
+/*
+ * Arguments    : emxArray_char_T **pEmxArray
+ *                int numDimensions
+ * Return Type  : void
+ */
+void emxInit_char_T(emxArray_char_T **pEmxArray, int numDimensions)
+{
+  emxArray_char_T *emxArray;
+  int i;
+  *pEmxArray = (emxArray_char_T *)malloc(sizeof(emxArray_char_T));
+  emxArray = *pEmxArray;
+  emxArray->data = (char *)NULL;
   emxArray->numDimensions = numDimensions;
   emxArray->size = (int *)malloc((unsigned int)(sizeof(int) * numDimensions));
   emxArray->allocatedSize = 0;

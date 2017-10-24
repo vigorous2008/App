@@ -3,13 +3,13 @@
 //
 #include <jni.h>
 #include<android/log.h>
-#include "cn_iviking_app_jni_JNIUtils.h"
+#include "cn_iviking_app_jni_Detector.h"
 #include "extmessage.h"
 #include "extmessage_emxAPI.h"
 #include "extmessage_initialize.h"
 #include "math.h"
 #include <string.h>
-#define LOG "liubox-jni"// 这个是自定义的LOG的标识  
+#define LOG " WaterMark Detector"// 这个是自定义的LOG的标识  
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,LOG,__VA_ARGS__) // 定义LOGD类型  
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,LOG,__VA_ARGS__) // 定义LOGI类型  
 #define LOGW(...) __android_log_print(ANDROID_LOG_WARN,LOG,__VA_ARGS__) // 定义LOGW类型  
@@ -46,19 +46,19 @@ static emxArray_real_T *argInit_Unboundedx1_real_T(unsigned char * buf,int size)
 
     return result;
 }
-JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_JNIUtils_getString
+JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_Detector_getString
         (JNIEnv *env, jobject obj){
     return (*env)->NewStringUTF(env,"IVIKING 水印测试");
 }
 
-JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
-        (JNIEnv *env, jobject obj, jbyteArray arr, jstring args1, jlong args2, jstring args3, jstring args4){
+JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_Detector_getSymbol
+        (JNIEnv *env, jobject obj, jbyteArray arr, jlong args1, jlong args2, jstring args3, jstring args4){
    // LOGD("btn_fftw_init()");
     LOGI( "revcieve: %d ",args2);
 
     extmessage_initialize();
-    emxArray_real_T* msg;
-    emxInitArray_real_T(&msg, 2);
+    emxArray_char_T* msg;
+    emxInitArray_char_T(&msg, 2);
     jbyte *bytes = (*env)->GetByteArrayElements(env,arr,0);
 
     //     emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2-44);//音频文件数据，需要减去wav头
@@ -66,22 +66,12 @@ JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
 
     //emxCreateWrapper_real_T((double*)buf, a / (sizeof(double) / sizeof(char)), 1);
     extmessage(data, 44100, 1, msg);
-    unsigned char  ret[100];
-    for (int i =0;i<100;i++)
-        ret[i] = ret[i]&0x00;
-    for (int idx0 = 0; idx0 < msg->size[1]; idx0++) {
-        /* Set the value of the array element.
-        Change this value to the value that the application requires. */
-        LOGI (" AUDIO--- %f ",msg->data[idx0]);
 
-        if(msg->data[idx0] != 0)
-            ret[idx0/8] = ret[idx0/8] | 0x80>>(idx0%8);
-    }
 
     jbyteArray array = (*env)->NewByteArray(env,msg->size[1]);
 
-    for (int i =0;i<msg->size[1]/8;i++){
-        LOGI( "liuboxtest  returned: %c ",ret[i]);
+    for (int i =0;i<msg->size[1];i++){
+        LOGI( "liuboxtest  returned: %c ",msg->data[i]);
         //  return (*env)->NewStringUTF(env, msg);
         //LOGI( "String returned: %s ",ret[i]);
        // strcat(mark,(char)ret[i]);
@@ -89,7 +79,7 @@ JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_JNIUtils_getSymbol
     }
     //jstring deviceNum = env->NewStringUTF((const char*)devicenumber);
 
-    (*env)->SetByteArrayRegion(env,array,0,msg->size[1],ret);
+    (*env)->SetByteArrayRegion(env,array,0,msg->size[1],msg->data);
 
     return array;
 }

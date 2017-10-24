@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import cn.iviking.app.jni.JNIUtils;
+import cn.iviking.app.jni.Detector;
 import cn.iviking.app.audio.IvikingAudio;
 public class MainActivity extends AppCompatActivity {
     PipedInputStream in;
@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     TextView tv ;
     Handler handler;
     Timer timer ;
+
+    /**
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
        button = (Button)findViewById(R.id.startButton);
        tv = (TextView)findViewById(R.id.tv);
        // byte[] data = new byte[1024*1024];
-        /*InputStream inStream = getResources().openRawResource(R.raw.watermark);
+        InputStream inStream = getResources().openRawResource(R.raw.watermark);
         Log.i("AAAA","读音频文件");
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         byte[] buff = new byte[100];
@@ -58,21 +62,19 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        byte[] data = swapStream.toByteArray();
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-        Log.i("AAAA path=",path);
-        Log.i("AAAA",String.format("pcm length %d",data.length) );
-        byte[] byteArr = new JNIUtils().getSymbol(data,"44100",data.length,"3","4");
+        byte[] audioData = swapStream.toByteArray();
+        Log.i("AAAA",String.format("pcm length %d",audioData.length) );
+        byte[] byteArr = new Detector().getSymbol(audioData,44100,audioData.length,"3","4");
         String mark = "";
         for(int a=0;a<byteArr.length;a++){
-            Log.i("watermark in bit",String.valueOf(byteArr[a]));
-            mark+= String.format(" %x",byteArr[a]);
+            Log.i("watermark in char",String.format(" %c",byteArr[a]));
+            mark+= String.format(" %c",byteArr[a]);
         }
 
         Log.i("mark String",mark);
 
-        tv.setText(mark);*/
-        tv.setText(new JNIUtils().getString());
+        tv.setText(mark);
+       // tv.setText(new Detector().getString());
         Log.i("AAAA","00000000000---0000000000");
         handler = new Handler(){
             @Override
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     pos = pos +len;
                     Log.i("data from mic",String.valueOf(len));
                 }else{
-                    byte[] markArr = new JNIUtils().getSymbol(data,44100,data.length,"3","4");
+                    byte[] markArr = new Detector().getSymbol(data,44100,data.length,"3","4");
                     String hols="";
                     Log.i("watermark from MIC",new String(markArr));
                     for(int a=0;a<markArr.length;a++){

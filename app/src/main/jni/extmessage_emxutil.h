@@ -2,7 +2,7 @@
  * File: extmessage_emxutil.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 23-Oct-2017 13:29:03
+ * C/C++ source code generated on  : 24-Oct-2017 11:07:21
  */
 
 #ifndef EXTMESSAGE_EMXUTIL_H
@@ -21,12 +21,14 @@
 extern void emxEnsureCapacity(emxArray__common *emxArray, int oldNumel, unsigned
   int elementSize);
 extern void emxFree_boolean_T(emxArray_boolean_T **pEmxArray);
+extern void emxFree_char_T(emxArray_char_T **pEmxArray);
 extern void emxFree_creal_T(emxArray_creal_T **pEmxArray);
 extern void emxFree_int32_T(emxArray_int32_T **pEmxArray);
 extern void emxFree_real_T(emxArray_real_T **pEmxArray);
 extern void emxFree_uint32_T(emxArray_uint32_T **pEmxArray);
 extern void emxInit_boolean_T(emxArray_boolean_T **pEmxArray, int numDimensions);
 extern void emxInit_boolean_T1(emxArray_boolean_T **pEmxArray, int numDimensions);
+extern void emxInit_char_T(emxArray_char_T **pEmxArray, int numDimensions);
 extern void emxInit_creal_T(emxArray_creal_T **pEmxArray, int numDimensions);
 extern void emxInit_int32_T(emxArray_int32_T **pEmxArray, int numDimensions);
 extern void emxInit_int32_T1(emxArray_int32_T **pEmxArray, int numDimensions);

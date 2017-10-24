@@ -1,12 +1,12 @@
 /*
- * File: filter.h
+ * File: filterpointer.h
  *
  * MATLAB Coder version            : 3.3
  * C/C++ source code generated on  : 24-Oct-2017 11:07:21
  */
 
-#ifndef FILTER_H
-#define FILTER_H
+#ifndef FILTERPOINTER_H
+#define FILTERPOINTER_H
 
 /* Include Files */
 #include <math.h>
@@ -18,12 +18,12 @@
 #include "extmessage_types.h"
 
 /* Function Declarations */
-extern void filter(const emxArray_real_T *x, emxArray_real_T *y);
+extern void filterpointer(emxArray_real_T *IndMax, const emxArray_real_T *data);
 
 #endif
 
 /*
- * File trailer for filter.h
+ * File trailer for filterpointer.h
  *
  * [EOF]
  */
