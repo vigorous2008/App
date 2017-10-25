@@ -2,7 +2,7 @@
  * File: extmessage.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 09:40:42
+ * C/C++ source code generated on  : 25-Oct-2017 12:21:32
  */
 
 /* Include Files */
@@ -15,7 +15,6 @@
 #include "lx_smooth.h"
 #include "ifft.h"
 #include "fft.h"
-#include "highp.h"
 
 /* Function Declarations */
 static double rt_hypotd_snf(double u0, double u1);
@@ -60,16 +59,26 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
                 emxArray_char_T *msg)
 {
   emxArray_real_T *x;
+  unsigned int data_idx_0;
+  int i;
+  int nx;
+  int halfn;
   emxArray_creal_T *b_x;
+  int lastIndexToDouble;
   int c_x[1];
   emxArray_real_T d_x;
-  int halfn;
-  int lastIndexToDouble;
-  int nx;
+  static const double dv0[9] = { 8.567905661780301E-6, -6.8543245294242408E-5,
+    0.00023990135852984846, -0.00047980271705969692, 0.00059975339632462119,
+    -0.00047980271705969692, 0.00023990135852984846, -6.8543245294242408E-5,
+    8.567905661780301E-6 };
+
+  double as;
+  static const double dv1[9] = { 1.0, 5.8748452954799513, 15.929009885013079,
+    25.863390191642498, 27.396164743675833, 19.338559612922506,
+    8.870573689031211, 2.4158496311041762, 0.29911519546637977 };
+
   emxArray_creal_T *e_x;
-  int i0;
   emxArray_real_T *am;
-  unsigned int x_idx_0;
   emxArray_real_T *varargin_1;
   emxArray_uint32_T *idx;
   emxArray_real_T *sm;
@@ -79,21 +88,68 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   int b_sm[2];
   emxArray_boolean_T *ok;
   emxArray_boolean_T *g_x;
-  double h_x;
   emxArray_real_T *r0;
-  emxArray_real_T *i_x;
+  emxArray_real_T *h_x;
   boolean_T exitg1;
   emxArray_real_T *b_varargin_1;
-  emxArray_real_T *r1;
   double tmp_data[1];
   int c_sm[2];
-  emxArray_int32_T *r2;
+  emxArray_int32_T *r1;
   emxArray_real_T *d_sm;
   (void)fs;
   (void)channel;
   emxInit_real_T(&x, 1);
+
+  /* 高通滤波 */
+  /* 使用注意事项：通带或阻带的截止频率的选取范围是不能超过采样率的一半 */
+  /* 即，f1,f3的值都要小于 Fs/2 */
+  /* x:需要带通滤波的序列 */
+  /*  f 1：通带截止频率 */
+  /*  f 2：阻带截止频率 */
+  /* rp：边带区衰减DB数设置 */
+  /* rs：截止区衰减DB数设置 */
+  /* FS：序列x的采样频率 */
+  /*  rp=0.1;rs=30;%通带边衰减DB值和阻带边衰减DB值 */
+  /*  Fs=2000;%采样率 */
+  /*  */
+  /*  设计切比雪夫滤波器； */
+  /* 查看设计滤波器的曲线 */
+  /* figure;plot(w,h);title('所设计滤波器的通带曲线');grid on; */
+  data_idx_0 = (unsigned int)data->size[0];
+  i = x->size[0];
+  x->size[0] = (int)data_idx_0;
+  emxEnsureCapacity((emxArray__common *)x, i, sizeof(double));
+  nx = data->size[0];
+  halfn = x->size[0];
+  i = x->size[0];
+  x->size[0] = halfn;
+  emxEnsureCapacity((emxArray__common *)x, i, sizeof(double));
+  for (i = 0; i < halfn; i++) {
+    x->data[i] = 0.0;
+  }
+
+  for (halfn = 0; halfn + 1 <= nx; halfn++) {
+    lastIndexToDouble = nx - halfn;
+    if (!(lastIndexToDouble < 9)) {
+      lastIndexToDouble = 9;
+    }
+
+    for (i = 0; i + 1 <= lastIndexToDouble; i++) {
+      x->data[halfn + i] += data->data[halfn] * dv0[i];
+    }
+
+    lastIndexToDouble = (nx - halfn) - 1;
+    if (!(lastIndexToDouble < 8)) {
+      lastIndexToDouble = 8;
+    }
+
+    as = -x->data[halfn];
+    for (i = 1; i <= lastIndexToDouble; i++) {
+      x->data[halfn + i] += as * dv1[i];
+    }
+  }
+
   emxInit_creal_T(&b_x, 1);
-  highp(data, x);
   c_x[0] = x->size[0];
   d_x = *x;
   d_x.size = (int *)&c_x;
@@ -106,31 +162,31 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
     lastIndexToDouble = halfn + 1;
   }
 
-  for (nx = 1; nx + 1 <= lastIndexToDouble; nx++) {
-    b_x->data[nx].re *= 2.0;
-    b_x->data[nx].im *= 2.0;
+  for (i = 1; i + 1 <= lastIndexToDouble; i++) {
+    b_x->data[i].re *= 2.0;
+    b_x->data[i].im *= 2.0;
   }
 
-  for (nx = halfn + 1; nx + 1 <= x->size[0]; nx++) {
-    b_x->data[nx].re = 0.0;
-    b_x->data[nx].im = 0.0;
+  for (i = halfn + 1; i + 1 <= x->size[0]; i++) {
+    b_x->data[i].re = 0.0;
+    b_x->data[i].im = 0.0;
   }
 
   emxInit_creal_T(&e_x, 1);
-  i0 = e_x->size[0];
+  i = e_x->size[0];
   e_x->size[0] = b_x->size[0];
-  emxEnsureCapacity((emxArray__common *)e_x, i0, sizeof(creal_T));
+  emxEnsureCapacity((emxArray__common *)e_x, i, sizeof(creal_T));
   halfn = b_x->size[0];
-  for (i0 = 0; i0 < halfn; i0++) {
-    e_x->data[i0] = b_x->data[i0];
+  for (i = 0; i < halfn; i++) {
+    e_x->data[i] = b_x->data[i];
   }
 
   emxInit_real_T(&am, 1);
   ifft(e_x, b_x);
-  x_idx_0 = (unsigned int)b_x->size[0];
-  i0 = am->size[0];
-  am->size[0] = (int)x_idx_0;
-  emxEnsureCapacity((emxArray__common *)am, i0, sizeof(double));
+  data_idx_0 = (unsigned int)b_x->size[0];
+  i = am->size[0];
+  am->size[0] = (int)data_idx_0;
+  emxEnsureCapacity((emxArray__common *)am, i, sizeof(double));
   halfn = 0;
   emxFree_creal_T(&e_x);
   while (halfn + 1 <= b_x->size[0]) {
@@ -145,11 +201,11 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   /*  title('hilbert'); */
   /*   plot(1:length(x),am); */
   halfn = am->size[0];
-  i0 = varargin_1->size[0];
+  i = varargin_1->size[0];
   varargin_1->size[0] = halfn;
-  emxEnsureCapacity((emxArray__common *)varargin_1, i0, sizeof(double));
-  for (i0 = 0; i0 < halfn; i0++) {
-    varargin_1->data[i0] = am->data[i0];
+  emxEnsureCapacity((emxArray__common *)varargin_1, i, sizeof(double));
+  for (i = 0; i < halfn; i++) {
+    varargin_1->data[i] = am->data[i];
   }
 
   emxInit_uint32_T(&idx, 2);
@@ -228,27 +284,27 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   /*  x is not given */
   halfn = am->size[0];
   if (halfn < 1) {
-    i0 = idx->size[0] * idx->size[1];
+    i = idx->size[0] * idx->size[1];
     idx->size[0] = 1;
     idx->size[1] = 0;
-    emxEnsureCapacity((emxArray__common *)idx, i0, sizeof(unsigned int));
+    emxEnsureCapacity((emxArray__common *)idx, i, sizeof(unsigned int));
   } else {
-    i0 = idx->size[0] * idx->size[1];
+    i = idx->size[0] * idx->size[1];
     idx->size[0] = 1;
     idx->size[1] = halfn;
-    emxEnsureCapacity((emxArray__common *)idx, i0, sizeof(unsigned int));
+    emxEnsureCapacity((emxArray__common *)idx, i, sizeof(unsigned int));
     halfn--;
-    for (i0 = 0; i0 <= halfn; i0++) {
-      idx->data[idx->size[0] * i0] = 1U + i0;
+    for (i = 0; i <= halfn; i++) {
+      idx->data[idx->size[0] * i] = 1U + i;
     }
   }
 
-  i0 = x->size[0];
+  i = x->size[0];
   x->size[0] = idx->size[1];
-  emxEnsureCapacity((emxArray__common *)x, i0, sizeof(double));
+  emxEnsureCapacity((emxArray__common *)x, i, sizeof(double));
   halfn = idx->size[1];
-  for (i0 = 0; i0 < halfn; i0++) {
-    x->data[i0] = idx->data[idx->size[0] * i0];
+  for (i = 0; i < halfn; i++) {
+    x->data[i] = idx->data[idx->size[0] * i];
   }
 
   /*  is span given? */
@@ -265,123 +321,121 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   emxInit_int32_T1(&ii, 1);
   if (halfn == 0) {
     halfn = am->size[0];
-    i0 = sm->size[0];
+    i = sm->size[0];
     sm->size[0] = halfn;
-    emxEnsureCapacity((emxArray__common *)sm, i0, sizeof(double));
-    for (i0 = 0; i0 < halfn; i0++) {
-      sm->data[i0] = varargin_1->data[i0];
+    emxEnsureCapacity((emxArray__common *)sm, i, sizeof(double));
+    for (i = 0; i < halfn; i++) {
+      sm->data[i] = varargin_1->data[i];
     }
   } else {
     /*  realize span */
     /*  percent convention */
     /*  smooth(Y,[],method) */
-    i0 = idx->size[0] * idx->size[1];
+    i = idx->size[0] * idx->size[1];
     idx->size[0] = 1;
     idx->size[1] = halfn;
-    emxEnsureCapacity((emxArray__common *)idx, i0, sizeof(unsigned int));
+    emxEnsureCapacity((emxArray__common *)idx, i, sizeof(unsigned int));
     halfn--;
-    for (i0 = 0; i0 <= halfn; i0++) {
-      idx->data[idx->size[0] * i0] = 1U + i0;
+    for (i = 0; i <= halfn; i++) {
+      idx->data[idx->size[0] * i] = 1U + i;
     }
 
     /*  if NaNs not all at end */
     halfn = am->size[0];
-    i0 = sm->size[0];
+    i = sm->size[0];
     sm->size[0] = halfn;
-    emxEnsureCapacity((emxArray__common *)sm, i0, sizeof(double));
-    for (i0 = 0; i0 < halfn; i0++) {
-      sm->data[i0] = rtNaN;
+    emxEnsureCapacity((emxArray__common *)sm, i, sizeof(double));
+    for (i = 0; i < halfn; i++) {
+      sm->data[i] = rtNaN;
     }
 
     emxInit_boolean_T(&ok, 1);
-    i0 = ok->size[0];
+    i = ok->size[0];
     ok->size[0] = x->size[0];
-    emxEnsureCapacity((emxArray__common *)ok, i0, sizeof(boolean_T));
+    emxEnsureCapacity((emxArray__common *)ok, i, sizeof(boolean_T));
     halfn = x->size[0];
-    for (i0 = 0; i0 < halfn; i0++) {
-      ok->data[i0] = rtIsNaN(x->data[i0]);
+    for (i = 0; i < halfn; i++) {
+      ok->data[i] = rtIsNaN(x->data[i]);
     }
 
-    i0 = ok->size[0];
-    emxEnsureCapacity((emxArray__common *)ok, i0, sizeof(boolean_T));
+    i = ok->size[0];
+    emxEnsureCapacity((emxArray__common *)ok, i, sizeof(boolean_T));
     halfn = ok->size[0];
-    for (i0 = 0; i0 < halfn; i0++) {
-      ok->data[i0] = !ok->data[i0];
+    for (i = 0; i < halfn; i++) {
+      ok->data[i] = !ok->data[i];
     }
 
     lastIndexToDouble = ok->size[0] - 1;
     halfn = 0;
-    for (nx = 0; nx <= lastIndexToDouble; nx++) {
+    for (i = 0; i <= lastIndexToDouble; i++) {
       halfn++;
     }
 
-    i0 = ii->size[0];
+    i = ii->size[0];
     ii->size[0] = halfn;
-    emxEnsureCapacity((emxArray__common *)ii, i0, sizeof(int));
+    emxEnsureCapacity((emxArray__common *)ii, i, sizeof(int));
     halfn = 0;
-    for (nx = 0; nx <= lastIndexToDouble; nx++) {
-      ii->data[halfn] = nx + 1;
+    for (i = 0; i <= lastIndexToDouble; i++) {
+      ii->data[halfn] = i + 1;
       halfn++;
     }
 
-    emxInit_real_T(&i_x, 1);
-    i0 = i_x->size[0];
-    i_x->size[0] = ii->size[0];
-    emxEnsureCapacity((emxArray__common *)i_x, i0, sizeof(double));
+    emxInit_real_T(&h_x, 1);
+    i = h_x->size[0];
+    h_x->size[0] = ii->size[0];
+    emxEnsureCapacity((emxArray__common *)h_x, i, sizeof(double));
     halfn = ii->size[0];
-    for (i0 = 0; i0 < halfn; i0++) {
-      i_x->data[i0] = x->data[ii->data[i0] - 1];
+    for (i = 0; i < halfn; i++) {
+      h_x->data[i] = x->data[ii->data[i] - 1];
     }
 
     emxInit_real_T(&b_varargin_1, 1);
-    i0 = b_varargin_1->size[0];
+    i = b_varargin_1->size[0];
     b_varargin_1->size[0] = ii->size[0];
-    emxEnsureCapacity((emxArray__common *)b_varargin_1, i0, sizeof(double));
+    emxEnsureCapacity((emxArray__common *)b_varargin_1, i, sizeof(double));
     halfn = ii->size[0];
-    for (i0 = 0; i0 < halfn; i0++) {
-      b_varargin_1->data[i0] = varargin_1->data[ii->data[i0] - 1];
+    for (i = 0; i < halfn; i++) {
+      b_varargin_1->data[i] = varargin_1->data[ii->data[i] - 1];
     }
 
-    emxInit_real_T(&r1, 1);
     tmp_data[0] = 600.0;
-    moving(i_x, b_varargin_1, tmp_data, r1);
+    moving(h_x, b_varargin_1, tmp_data, b_y1);
     lastIndexToDouble = ok->size[0];
     halfn = 0;
     emxFree_real_T(&b_varargin_1);
-    emxFree_real_T(&i_x);
+    emxFree_real_T(&h_x);
     emxFree_boolean_T(&ok);
-    for (nx = 0; nx < lastIndexToDouble; nx++) {
-      sm->data[nx] = r1->data[halfn];
+    for (i = 0; i < lastIndexToDouble; i++) {
+      sm->data[i] = b_y1->data[halfn];
       halfn++;
     }
 
-    emxFree_real_T(&r1);
-    emxInit_int32_T(&r2, 2);
-    i0 = r2->size[0] * r2->size[1];
-    r2->size[0] = 1;
-    r2->size[1] = idx->size[1];
-    emxEnsureCapacity((emxArray__common *)r2, i0, sizeof(int));
+    emxInit_int32_T(&r1, 2);
+    i = r1->size[0] * r1->size[1];
+    r1->size[0] = 1;
+    r1->size[1] = idx->size[1];
+    emxEnsureCapacity((emxArray__common *)r1, i, sizeof(int));
     halfn = idx->size[0] * idx->size[1];
-    for (i0 = 0; i0 < halfn; i0++) {
-      r2->data[i0] = (int)idx->data[i0];
+    for (i = 0; i < halfn; i++) {
+      r1->data[i] = (int)idx->data[i];
     }
 
     emxInit_real_T(&d_sm, 1);
-    i0 = d_sm->size[0];
-    d_sm->size[0] = r2->size[0] * r2->size[1];
-    emxEnsureCapacity((emxArray__common *)d_sm, i0, sizeof(double));
-    halfn = r2->size[0] * r2->size[1];
-    for (i0 = 0; i0 < halfn; i0++) {
-      d_sm->data[i0] = sm->data[i0];
+    i = d_sm->size[0];
+    d_sm->size[0] = r1->size[0] * r1->size[1];
+    emxEnsureCapacity((emxArray__common *)d_sm, i, sizeof(double));
+    halfn = r1->size[0] * r1->size[1];
+    for (i = 0; i < halfn; i++) {
+      d_sm->data[i] = sm->data[i];
     }
 
     halfn = d_sm->size[0];
-    for (i0 = 0; i0 < halfn; i0++) {
-      sm->data[r2->data[i0] - 1] = d_sm->data[i0];
+    for (i = 0; i < halfn; i++) {
+      sm->data[r1->data[i] - 1] = d_sm->data[i];
     }
 
     emxFree_real_T(&d_sm);
-    emxFree_int32_T(&r2);
+    emxFree_int32_T(&r1);
   }
 
   emxFree_uint32_T(&idx);
@@ -397,39 +451,39 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   b_diff(&d_x, f_x);
   nx = f_x->size[0];
   for (halfn = 0; halfn + 1 <= nx; halfn++) {
-    h_x = f_x->data[halfn];
+    as = f_x->data[halfn];
     if (f_x->data[halfn] < 0.0) {
-      h_x = -1.0;
+      as = -1.0;
     } else if (f_x->data[halfn] > 0.0) {
-      h_x = 1.0;
+      as = 1.0;
     } else {
       if (f_x->data[halfn] == 0.0) {
-        h_x = 0.0;
+        as = 0.0;
       }
     }
 
-    f_x->data[halfn] = h_x;
+    f_x->data[halfn] = as;
   }
 
   emxInit_boolean_T1(&g_x, 2);
   emxInit_real_T1(&r0, 2);
   b_diff(f_x, r0);
-  i0 = g_x->size[0] * g_x->size[1];
+  i = g_x->size[0] * g_x->size[1];
   g_x->size[0] = r0->size[0];
   g_x->size[1] = 1;
-  emxEnsureCapacity((emxArray__common *)g_x, i0, sizeof(boolean_T));
+  emxEnsureCapacity((emxArray__common *)g_x, i, sizeof(boolean_T));
   halfn = r0->size[0] * r0->size[1];
   emxFree_real_T(&f_x);
-  for (i0 = 0; i0 < halfn; i0++) {
-    g_x->data[i0] = (r0->data[i0] < 0.0);
+  for (i = 0; i < halfn; i++) {
+    g_x->data[i] = (r0->data[i] < 0.0);
   }
 
   emxFree_real_T(&r0);
   nx = g_x->size[0];
   lastIndexToDouble = 0;
-  i0 = ii->size[0];
+  i = ii->size[0];
   ii->size[0] = g_x->size[0];
-  emxEnsureCapacity((emxArray__common *)ii, i0, sizeof(int));
+  emxEnsureCapacity((emxArray__common *)ii, i, sizeof(int));
   halfn = 1;
   exitg1 = false;
   while ((!exitg1) && (halfn <= nx)) {
@@ -448,28 +502,28 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
 
   if (g_x->size[0] == 1) {
     if (lastIndexToDouble == 0) {
-      i0 = ii->size[0];
+      i = ii->size[0];
       ii->size[0] = 0;
-      emxEnsureCapacity((emxArray__common *)ii, i0, sizeof(int));
+      emxEnsureCapacity((emxArray__common *)ii, i, sizeof(int));
     }
   } else {
-    i0 = ii->size[0];
+    i = ii->size[0];
     if (1 > lastIndexToDouble) {
       ii->size[0] = 0;
     } else {
       ii->size[0] = lastIndexToDouble;
     }
 
-    emxEnsureCapacity((emxArray__common *)ii, i0, sizeof(int));
+    emxEnsureCapacity((emxArray__common *)ii, i, sizeof(int));
   }
 
   emxFree_boolean_T(&g_x);
-  i0 = b_y1->size[0];
+  i = b_y1->size[0];
   b_y1->size[0] = ii->size[0];
-  emxEnsureCapacity((emxArray__common *)b_y1, i0, sizeof(double));
+  emxEnsureCapacity((emxArray__common *)b_y1, i, sizeof(double));
   halfn = ii->size[0];
-  for (i0 = 0; i0 < halfn; i0++) {
-    b_y1->data[i0] = (double)ii->data[i0] + 1.0;
+  for (i = 0; i < halfn; i++) {
+    b_y1->data[i] = (double)ii->data[i] + 1.0;
   }
 
   emxFree_int32_T(&ii);
@@ -540,12 +594,16 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   /*       */
   /*  end */
   /*  % IndMax(find(IndMax==0))=[]; */
-  /* plot(IndMin,sm(IndMin),'r^') */
+  /*  figure;hold on; */
+  /*  %plot(IndMin,sm(IndMin),'r^') */
+  /*  plot(IndMax,sm(IndMax),'k*') */
+  /*  plot(sm); */
   /*  figure; hold on; */
   /*  tempS = sm(210000:270000); */
   /*  tempI = IndMax(find(IndMax<270000)); */
   /*  plot(tempI-210000,sm(tempI),'k*'); */
   /*  plot(tempS); */
+  /*   testshow(IndMax,sm); */
   returnmsg(b_y1, msg);
 
   /*  for i=2:length(IndMax) */

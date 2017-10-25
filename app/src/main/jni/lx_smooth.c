@@ -2,7 +2,7 @@
  * File: lx_smooth.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 09:40:42
+ * C/C++ source code generated on  : 25-Oct-2017 12:21:32
  */
 
 /* Include Files */
@@ -79,7 +79,7 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
             span_data[], emxArray_real_T *c)
 {
   emxArray_boolean_T *ynan;
-  int i1;
+  int i0;
   int loop_ub;
   double u0;
   double u1;
@@ -91,21 +91,21 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
   emxArray_real_T *cbegin;
   int k;
   double b_cbegin[797];
-  int i2;
+  int i1;
   int i;
-  int i3;
+  int i2;
   double b_span_data[1];
-  int i4;
+  int i3;
   int vstride;
   emxInit_boolean_T(&ynan, 1);
 
   /* -------------------------------------------------------------------- */
-  i1 = ynan->size[0];
+  i0 = ynan->size[0];
   ynan->size[0] = y->size[0];
-  emxEnsureCapacity((emxArray__common *)ynan, i1, sizeof(boolean_T));
+  emxEnsureCapacity((emxArray__common *)ynan, i0, sizeof(boolean_T));
   loop_ub = y->size[0];
-  for (i1 = 0; i1 < loop_ub; i1++) {
-    ynan->data[i1] = rtIsNaN(y->data[i1]);
+  for (i0 = 0; i0 < loop_ub; i0++) {
+    ynan->data[i0] = rtIsNaN(y->data[i0]);
   }
 
   loop_ub = y->size[0];
@@ -120,12 +120,12 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
 
   /* width = span(1)-1+mod(span,2); % force it to be odd */
   diff(x, yy);
-  i1 = b_yy->size[0];
+  i0 = b_yy->size[0];
   b_yy->size[0] = yy->size[0];
-  emxEnsureCapacity((emxArray__common *)b_yy, i1, sizeof(boolean_T));
+  emxEnsureCapacity((emxArray__common *)b_yy, i0, sizeof(boolean_T));
   loop_ub = yy->size[0];
-  for (i1 = 0; i1 < loop_ub; i1++) {
-    b_yy->data[i1] = (yy->data[i1] == 0.0);
+  for (i0 = 0; i0 < loop_ub; i0++) {
+    b_yy->data[i0] = (yy->data[i0] == 0.0);
   }
 
   xreps = any(b_yy);
@@ -138,8 +138,8 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
   if ((!xreps) && (!any(ynan))) {
     /*  simplest method for most common case */
     filter(y, c);
-    for (i1 = 0; i1 < 797; i1++) {
-      b_cbegin[i1] = y->data[i1];
+    for (i0 = 0; i0 < 797; i0++) {
+      b_cbegin[i0] = y->data[i0];
     }
 
     for (k = 0; k < 796; k++) {
@@ -147,44 +147,44 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
     }
 
     if (y->size[0] - 796 > y->size[0]) {
+      i0 = 1;
       i1 = 1;
-      i2 = 1;
-      i3 = 0;
+      i2 = 0;
     } else {
-      i1 = y->size[0];
-      i2 = -1;
-      i3 = y->size[0] - 796;
+      i0 = y->size[0];
+      i1 = -1;
+      i2 = y->size[0] - 796;
     }
 
-    i4 = yy->size[0];
-    yy->size[0] = div_s32_floor(i3 - i1, i2) + 1;
-    emxEnsureCapacity((emxArray__common *)yy, i4, sizeof(double));
-    loop_ub = div_s32_floor(i3 - i1, i2);
-    for (i4 = 0; i4 <= loop_ub; i4++) {
-      yy->data[i4] = y->data[(i1 + i2 * i4) - 1];
+    i3 = yy->size[0];
+    yy->size[0] = div_s32_floor(i2 - i0, i1) + 1;
+    emxEnsureCapacity((emxArray__common *)yy, i3, sizeof(double));
+    loop_ub = div_s32_floor(i2 - i0, i1);
+    for (i3 = 0; i3 <= loop_ub; i3++) {
+      yy->data[i3] = y->data[(i0 + i1 * i3) - 1];
     }
 
     i = 2;
-    if (div_s32_floor(i3 - i1, i2) + 1 != 1) {
+    if (div_s32_floor(i2 - i0, i1) + 1 != 1) {
       i = 1;
     }
 
     if (i <= 1) {
-      i4 = div_s32_floor(i3 - i1, i2);
+      i3 = div_s32_floor(i2 - i0, i1);
     } else {
-      i4 = 0;
+      i3 = 0;
     }
 
-    if ((!(div_s32_floor(i3 - i1, i2) + 1 == 0)) && (i4 + 1 > 1)) {
+    if ((!(div_s32_floor(i2 - i0, i1) + 1 == 0)) && (i3 + 1 > 1)) {
       vstride = 1;
       k = 1;
       while (k <= i - 1) {
-        vstride *= div_s32_floor(i3 - i1, i2) + 1;
+        vstride *= div_s32_floor(i2 - i0, i1) + 1;
         k = 2;
       }
 
       for (loop_ub = 0; loop_ub + 1 <= vstride; loop_ub++) {
-        for (k = 1; k <= i4; k++) {
+        for (k = 1; k <= i3; k++) {
           yy->data[loop_ub + k * vstride] += yy->data[loop_ub + (k - 1) *
             vstride];
         }
@@ -192,63 +192,63 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
     }
 
     if (1 > yy->size[0]) {
+      i0 = 1;
       i1 = 1;
-      i2 = 1;
-      i3 = 0;
+      i2 = 0;
     } else {
-      i1 = yy->size[0];
-      i2 = -2;
-      i3 = 1;
+      i0 = yy->size[0];
+      i1 = -2;
+      i2 = 1;
     }
 
     if (799 > c->size[0]) {
-      i4 = -798;
+      i3 = -798;
       k = 0;
     } else {
-      i4 = 0;
+      i3 = 0;
       k = c->size[0];
     }
 
     i = c_yy->size[0];
-    c_yy->size[0] = div_s32_floor(i3 - i1, i2) + 1;
+    c_yy->size[0] = div_s32_floor(i2 - i0, i1) + 1;
     emxEnsureCapacity((emxArray__common *)c_yy, i, sizeof(double));
-    loop_ub = div_s32_floor(i3 - i1, i2);
-    for (i3 = 0; i3 <= loop_ub; i3++) {
-      c_yy->data[i3] = yy->data[(i1 + i2 * i3) - 1];
+    loop_ub = div_s32_floor(i2 - i0, i1);
+    for (i2 = 0; i2 <= loop_ub; i2++) {
+      c_yy->data[i2] = yy->data[(i0 + i1 * i2) - 1];
     }
 
-    i1 = cbegin->size[0];
-    cbegin->size[0] = k - i4;
-    emxEnsureCapacity((emxArray__common *)cbegin, i1, sizeof(double));
-    for (i1 = 0; i1 < 399; i1++) {
-      cbegin->data[i1] = b_cbegin[i1 << 1] / (1.0 + 2.0 * (double)i1);
+    i0 = cbegin->size[0];
+    cbegin->size[0] = k - i3;
+    emxEnsureCapacity((emxArray__common *)cbegin, i0, sizeof(double));
+    for (i0 = 0; i0 < 399; i0++) {
+      cbegin->data[i0] = b_cbegin[i0 << 1] / (1.0 + 2.0 * (double)i0);
     }
 
-    loop_ub = k - i4;
-    for (i1 = 0; i1 <= loop_ub - 799; i1++) {
-      cbegin->data[i1 + 399] = c->data[(i4 + i1) + 798];
+    loop_ub = k - i3;
+    for (i0 = 0; i0 <= loop_ub - 799; i0++) {
+      cbegin->data[i0 + 399] = c->data[(i3 + i0) + 798];
     }
 
-    for (i1 = 0; i1 < 399; i1++) {
-      cbegin->data[((i1 + k) - i4) - 399] = c_yy->data[i1] / (797.0 + -2.0 *
-        (double)i1);
+    for (i0 = 0; i0 < 399; i0++) {
+      cbegin->data[((i0 + k) - i3) - 399] = c_yy->data[i0] / (797.0 + -2.0 *
+        (double)i0);
     }
 
-    i1 = c->size[0];
+    i0 = c->size[0];
     c->size[0] = cbegin->size[0];
-    emxEnsureCapacity((emxArray__common *)c, i1, sizeof(double));
+    emxEnsureCapacity((emxArray__common *)c, i0, sizeof(double));
     loop_ub = cbegin->size[0];
-    for (i1 = 0; i1 < loop_ub; i1++) {
-      c->data[i1] = cbegin->data[i1];
+    for (i0 = 0; i0 < loop_ub; i0++) {
+      c->data[i0] = cbegin->data[i0];
     }
   } else if (!xreps) {
     /*  with no x repeats, can take ratio of two smoothed sequences */
-    i1 = yy->size[0];
+    i0 = yy->size[0];
     yy->size[0] = y->size[0];
-    emxEnsureCapacity((emxArray__common *)yy, i1, sizeof(double));
+    emxEnsureCapacity((emxArray__common *)yy, i0, sizeof(double));
     loop_ub = y->size[0];
-    for (i1 = 0; i1 < loop_ub; i1++) {
-      yy->data[i1] = y->data[i1];
+    for (i0 = 0; i0 < loop_ub; i0++) {
+      yy->data[i0] = y->data[i0];
     }
 
     loop_ub = ynan->size[0];
@@ -260,21 +260,21 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
 
     b_span_data[0] = u1;
     moving(x, yy, b_span_data, c);
-    i1 = b_ynan->size[0];
+    i0 = b_ynan->size[0];
     b_ynan->size[0] = ynan->size[0];
-    emxEnsureCapacity((emxArray__common *)b_ynan, i1, sizeof(double));
+    emxEnsureCapacity((emxArray__common *)b_ynan, i0, sizeof(double));
     loop_ub = ynan->size[0];
-    for (i1 = 0; i1 < loop_ub; i1++) {
-      b_ynan->data[i1] = !ynan->data[i1];
+    for (i0 = 0; i0 < loop_ub; i0++) {
+      b_ynan->data[i0] = !ynan->data[i0];
     }
 
     b_span_data[0] = u1;
     moving(x, b_ynan, b_span_data, yy);
-    i1 = c->size[0];
-    emxEnsureCapacity((emxArray__common *)c, i1, sizeof(double));
+    i0 = c->size[0];
+    emxEnsureCapacity((emxArray__common *)c, i0, sizeof(double));
     loop_ub = c->size[0];
-    for (i1 = 0; i1 < loop_ub; i1++) {
-      c->data[i1] /= yy->data[i1];
+    for (i0 = 0; i0 < loop_ub; i0++) {
+      c->data[i0] /= yy->data[i0];
     }
   } else {
     /*  with some x repeats, loop */
