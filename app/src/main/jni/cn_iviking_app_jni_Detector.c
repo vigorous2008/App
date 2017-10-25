@@ -54,7 +54,7 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_Detector_getString
 JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_Detector_getSymbol
         (JNIEnv *env, jobject obj, jbyteArray arr, jlong args1, jlong args2, jstring args3, jstring args4){
    // LOGD("btn_fftw_init()");
-    LOGI( "revcieve: %d ",args2);
+  //  LOGI( "revcieve: %l ",args2);
 
     extmessage_initialize();
     emxArray_char_T* msg;
@@ -70,13 +70,13 @@ JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_Detector_getSymbol
 
     jbyteArray array = (*env)->NewByteArray(env,msg->size[1]);
 
-    for (int i =0;i<msg->size[1];i++){
+    /*for (int i =0;i<msg->size[1];i++){
         LOGI( "liuboxtest  returned: %c ",msg->data[i]);
         //  return (*env)->NewStringUTF(env, msg);
         //LOGI( "String returned: %s ",ret[i]);
        // strcat(mark,(char)ret[i]);
 
-    }
+    }*/
     //jstring deviceNum = env->NewStringUTF((const char*)devicenumber);
 
     (*env)->SetByteArrayRegion(env,array,0,msg->size[1],msg->data);

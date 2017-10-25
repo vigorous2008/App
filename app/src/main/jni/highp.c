@@ -2,7 +2,7 @@
  * File: highp.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 23-Oct-2017 13:29:03
+ * C/C++ source code generated on  : 25-Oct-2017 09:40:42
  */
 
 /* Include Files */

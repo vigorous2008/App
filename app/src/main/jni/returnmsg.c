@@ -2,7 +2,7 @@
  * File: returnmsg.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 24-Oct-2017 11:07:21
+ * C/C++ source code generated on  : 25-Oct-2017 09:40:42
  */
 
 /* Include Files */
@@ -22,13 +22,15 @@
 void returnmsg(const emxArray_real_T *IndMax, emxArray_char_T *msg)
 {
   emxArray_char_T *ge;
-  int i4;
+  int i5;
   emxArray_real_T *cc;
   static const char cv0[4] = { '2', '0', '0', '1' };
 
   int i;
-  emxArray_int32_T *match_out;
   int match_idx;
+  emxArray_int32_T *match_out;
+  static const char pattern[7] = { '2', '0', '0', '1', '0', '1', '0' };
+
   emxArray_int32_T *matches;
   static const char cv1[3] = { '2', '0', '0' };
 
@@ -37,19 +39,19 @@ void returnmsg(const emxArray_real_T *IndMax, emxArray_char_T *msg)
 
   emxArray_int32_T *Indx;
   emxArray_char_T *tempg;
-  int i5;
+  int i6;
   int ic;
   double x;
   double p2;
   static const signed char iv0[4] = { 0, 1, 2, 3 };
 
   emxInit_char_T(&ge, 2);
-  i4 = ge->size[0] * ge->size[1];
+  i5 = ge->size[0] * ge->size[1];
   ge->size[0] = 1;
   ge->size[1] = 4;
-  emxEnsureCapacity((emxArray__common *)ge, i4, sizeof(char));
-  for (i4 = 0; i4 < 4; i4++) {
-    ge->data[i4] = cv0[i4];
+  emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
+  for (i5 = 0; i5 < 4; i5++) {
+    ge->data[i5] = cv0[i5];
   }
 
   emxInit_real_T(&cc, 1);
@@ -70,22 +72,22 @@ void returnmsg(const emxArray_real_T *IndMax, emxArray_char_T *msg)
   for (i = 0; i < cc->size[0]; i++) {
     if ((cc->data[i] < 4000.0) && (cc->data[i] > 1500.0)) {
       match_idx = ge->size[1];
-      i4 = ge->size[0] * ge->size[1];
+      i5 = ge->size[0] * ge->size[1];
       ge->size[1] = match_idx + 1;
-      emxEnsureCapacity((emxArray__common *)ge, i4, sizeof(char));
+      emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
       ge->data[match_idx] = '1';
     } else if ((cc->data[i] > 4000.0) && (cc->data[i] < 6000.0)) {
       match_idx = ge->size[1];
-      i4 = ge->size[0] * ge->size[1];
+      i5 = ge->size[0] * ge->size[1];
       ge->size[1] = match_idx + 2;
-      emxEnsureCapacity((emxArray__common *)ge, i4, sizeof(char));
+      emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
       ge->data[match_idx] = '0';
       ge->data[match_idx + 1] = '1';
     } else if ((cc->data[i] > 6000.0) && (cc->data[i] < 8000.0)) {
       match_idx = ge->size[1];
-      i4 = ge->size[0] * ge->size[1];
+      i5 = ge->size[0] * ge->size[1];
       ge->size[1] = match_idx + 3;
-      emxEnsureCapacity((emxArray__common *)ge, i4, sizeof(char));
+      emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
       ge->data[match_idx] = '0';
       ge->data[match_idx + 1] = '0';
       ge->data[match_idx + 2] = '1';
@@ -93,18 +95,18 @@ void returnmsg(const emxArray_real_T *IndMax, emxArray_char_T *msg)
       /*  i=i+1; */
     } else if ((cc->data[i] > 8000.0) && (cc->data[i] < 12000.0)) {
       match_idx = ge->size[1];
-      i4 = ge->size[0] * ge->size[1];
+      i5 = ge->size[0] * ge->size[1];
       ge->size[1] = match_idx + 4;
-      emxEnsureCapacity((emxArray__common *)ge, i4, sizeof(char));
+      emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
       ge->data[match_idx] = '0';
       ge->data[match_idx + 1] = '0';
       ge->data[match_idx + 2] = '0';
       ge->data[match_idx + 3] = '1';
     } else if ((cc->data[i] > 12000.0) && (cc->data[i] < 14000.0)) {
       match_idx = ge->size[1];
-      i4 = ge->size[0] * ge->size[1];
+      i5 = ge->size[0] * ge->size[1];
       ge->size[1] = match_idx + 5;
-      emxEnsureCapacity((emxArray__common *)ge, i4, sizeof(char));
+      emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
       ge->data[match_idx] = '0';
       ge->data[match_idx + 1] = '0';
       ge->data[match_idx + 2] = '0';
@@ -112,9 +114,9 @@ void returnmsg(const emxArray_real_T *IndMax, emxArray_char_T *msg)
       ge->data[match_idx + 4] = '1';
     } else if ((cc->data[i] > 14000.0) && (cc->data[i] < 16000.0)) {
       match_idx = ge->size[1];
-      i4 = ge->size[0] * ge->size[1];
+      i5 = ge->size[0] * ge->size[1];
       ge->size[1] = match_idx + 6;
-      emxEnsureCapacity((emxArray__common *)ge, i4, sizeof(char));
+      emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
       ge->data[match_idx] = '0';
       ge->data[match_idx + 1] = '0';
       ge->data[match_idx + 2] = '0';
@@ -123,9 +125,9 @@ void returnmsg(const emxArray_real_T *IndMax, emxArray_char_T *msg)
       ge->data[match_idx + 5] = '1';
     } else if ((cc->data[i] > 16000.0) && (cc->data[i] < 18000.0)) {
       match_idx = ge->size[1];
-      i4 = ge->size[0] * ge->size[1];
+      i5 = ge->size[0] * ge->size[1];
       ge->size[1] = match_idx + 7;
-      emxEnsureCapacity((emxArray__common *)ge, i4, sizeof(char));
+      emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
       ge->data[match_idx] = '0';
       ge->data[match_idx + 1] = '0';
       ge->data[match_idx + 2] = '0';
@@ -135,11 +137,11 @@ void returnmsg(const emxArray_real_T *IndMax, emxArray_char_T *msg)
       ge->data[match_idx + 6] = '1';
     } else {
       match_idx = ge->size[1];
-      i4 = ge->size[0] * ge->size[1];
+      i5 = ge->size[0] * ge->size[1];
       ge->size[1] = match_idx + 4;
-      emxEnsureCapacity((emxArray__common *)ge, i4, sizeof(char));
-      for (i4 = 0; i4 < 3; i4++) {
-        ge->data[match_idx + i4] = cv1[i4];
+      emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
+      for (i5 = 0; i5 < 3; i5++) {
+        ge->data[match_idx + i5] = cv1[i5];
       }
 
       ge->data[match_idx + 3] = '1';
@@ -147,16 +149,24 @@ void returnmsg(const emxArray_real_T *IndMax, emxArray_char_T *msg)
   }
 
   emxFree_real_T(&cc);
+  match_idx = ge->size[1];
+  i5 = ge->size[0] * ge->size[1];
+  ge->size[1] = match_idx + 7;
+  emxEnsureCapacity((emxArray__common *)ge, i5, sizeof(char));
+  for (i5 = 0; i5 < 7; i5++) {
+    ge->data[match_idx + i5] = pattern[i5];
+  }
+
   emxInit_int32_T(&match_out, 2);
   emxInit_int32_T(&matches, 2);
-  i4 = msg->size[0] * msg->size[1];
+  i5 = msg->size[0] * msg->size[1];
   msg->size[0] = 1;
   msg->size[1] = 0;
-  emxEnsureCapacity((emxArray__common *)msg, i4, sizeof(char));
-  i4 = matches->size[0] * matches->size[1];
+  emxEnsureCapacity((emxArray__common *)msg, i5, sizeof(char));
+  i5 = matches->size[0] * matches->size[1];
   matches->size[0] = 1;
   matches->size[1] = ge->size[1];
-  emxEnsureCapacity((emxArray__common *)matches, i4, sizeof(int));
+  emxEnsureCapacity((emxArray__common *)matches, i5, sizeof(int));
   match_idx = 0;
   for (i = 1; i <= ge->size[1] - 6; i++) {
     j = 1;
@@ -170,50 +180,50 @@ void returnmsg(const emxArray_real_T *IndMax, emxArray_char_T *msg)
     }
   }
 
-  i4 = match_out->size[0] * match_out->size[1];
+  i5 = match_out->size[0] * match_out->size[1];
   match_out->size[0] = 1;
   match_out->size[1] = match_idx;
-  emxEnsureCapacity((emxArray__common *)match_out, i4, sizeof(int));
+  emxEnsureCapacity((emxArray__common *)match_out, i5, sizeof(int));
   for (i = 0; i + 1 <= match_idx; i++) {
     match_out->data[i] = matches->data[i];
   }
 
   emxFree_int32_T(&matches);
   emxInit_int32_T(&Indx, 2);
-  i4 = Indx->size[0] * Indx->size[1];
+  i5 = Indx->size[0] * Indx->size[1];
   Indx->size[0] = 1;
   Indx->size[1] = match_out->size[1];
-  emxEnsureCapacity((emxArray__common *)Indx, i4, sizeof(int));
+  emxEnsureCapacity((emxArray__common *)Indx, i5, sizeof(int));
   match_idx = match_out->size[0] * match_out->size[1];
-  for (i4 = 0; i4 < match_idx; i4++) {
-    Indx->data[i4] = match_out->data[i4];
+  for (i5 = 0; i5 < match_idx; i5++) {
+    Indx->data[i5] = match_out->data[i5];
   }
 
   emxFree_int32_T(&match_out);
   i = 0;
   emxInit_char_T(&tempg, 2);
   while (i <= Indx->size[1] - 2) {
-    if ((double)Indx->data[1 + i] - (double)Indx->data[i] >= 20.0) {
-      if ((double)Indx->data[i] + 7.0 > (double)Indx->data[i + 1] - 1.0) {
-        i4 = 1;
+    if (Indx->data[1 + i] - Indx->data[i] >= 20) {
+      if (Indx->data[i] + 7U > (unsigned int)(Indx->data[i + 1] - 1)) {
         i5 = 1;
+        i6 = 1;
       } else {
-        i4 = (int)((double)Indx->data[i] + 7.0);
-        i5 = (int)((double)Indx->data[i + 1] - 1.0) + 1;
+        i5 = (int)(Indx->data[i] + 7U);
+        i6 = Indx->data[i + 1];
       }
 
       j = tempg->size[0] * tempg->size[1];
       tempg->size[0] = 1;
-      tempg->size[1] = i5 - i4;
+      tempg->size[1] = i6 - i5;
       emxEnsureCapacity((emxArray__common *)tempg, j, sizeof(char));
-      match_idx = i5 - i4;
+      match_idx = i6 - i5;
       for (j = 0; j < match_idx; j++) {
-        tempg->data[tempg->size[0] * j] = ge->data[(i4 + j) - 1];
+        tempg->data[tempg->size[0] * j] = ge->data[(i5 + j) - 1];
       }
 
       for (ic = 0; ic < 4; ic++) {
         match_idx = (ic << 2) + 1;
-        if (match_idx + 3 < i5 - i4) {
+        if (match_idx + 3 < i6 - i5) {
           /*          msgx = [msgx, char('a'+bin2dec(tempg(ic:ic+3))-1)] */
           x = 0.0;
           p2 = 1.0;

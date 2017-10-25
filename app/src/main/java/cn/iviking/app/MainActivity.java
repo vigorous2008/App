@@ -15,6 +15,8 @@ import android.util.Log;
 
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.IOException;
@@ -27,11 +29,16 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+import android.content.Context;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import cn.iviking.app.jni.Detector;
 import cn.iviking.app.audio.IvikingAudio;
 public class MainActivity extends AppCompatActivity {
     PipedInputStream in;
-    boolean isRrcord;
+    boolean isRecord;
     IvikingAudio mm ;
     Button button ;
     int off = 0;
@@ -50,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
        button = (Button)findViewById(R.id.startButton);
        tv = (TextView)findViewById(R.id.tv);
        // byte[] data = new byte[1024*1024];
-        InputStream inStream = getResources().openRawResource(R.raw.watermark);
+       /* InputStream inStream = getResources().openRawResource(R.raw.watermark);
         Log.i("AAAA","读音频文件");
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         byte[] buff = new byte[100];
@@ -64,17 +71,14 @@ public class MainActivity extends AppCompatActivity {
         }
         byte[] audioData = swapStream.toByteArray();
         Log.i("AAAA",String.format("pcm length %d",audioData.length) );
-        byte[] byteArr = new Detector().getSymbol(audioData,44100,audioData.length,"3","4");
+       byte[] byteArr = new Detector().getSymbol(audioData,44100,audioData.length,"0","0");
         String mark = "";
         for(int a=0;a<byteArr.length;a++){
             Log.i("watermark in char",String.format(" %c",byteArr[a]));
             mark+= String.format(" %c",byteArr[a]);
         }
-
         Log.i("mark String",mark);
-
-        tv.setText(mark);
-       // tv.setText(new Detector().getString());
+        tv.setText(mark);*/
         Log.i("AAAA","00000000000---0000000000");
         handler = new Handler(){
             @Override
@@ -107,15 +111,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void onClick_Event(View v){
-        if (isRrcord){
-            isRrcord = false;
+        if (isRecord){
+            isRecord = false;
             button.setText("START");
-            mm.stopRecord();
-            timer.cancel();
+           // mm.stopRecord();
+           // timer.cancel();
         }else{
-            isRrcord = true;
+            isRecord = true;
             button.setText("STOP");
-            startRecord();
+            StartRecord();
         }
     }
     private void startRecord() {
@@ -150,8 +154,8 @@ public class MainActivity extends AppCompatActivity {
                     String hols="";
                     Log.i("watermark from MIC",new String(markArr));
                     for(int a=0;a<markArr.length;a++){
-                        Log.i("watermark in bit",String.valueOf(markArr[a]));
-                        hols+= String.format(" %x",markArr[a]);
+                        Log.i("watermark in char",String.format(" %c",markArr[a]));
+                        hols+= String.format(" %c",markArr[a]);
                     }
 
                     // tv.setText(df.format(new Date())+" "+mark);
@@ -171,4 +175,69 @@ public class MainActivity extends AppCompatActivity {
 
         }
      }
+    public void StartRecord() {
+        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        final DateFormat dfHHMMSS = new SimpleDateFormat("yyyyMMddHHmmss");
+
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                Log.i("开始录音"," ");
+                //采集率
+                int frequency = 44100;
+                //格式
+                int channelConfiguration = AudioFormat.CHANNEL_IN_MONO;
+                //16Bit
+                int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
+                //生成PCM文件
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+                try {
+                    String file = path+"/"+dfHHMMSS.format(new Date())+"watermarkaudio.wav";
+                    Log.i("recorder: ",file);
+                    FileOutputStream fos = new FileOutputStream(new File(file));
+                    //输出流
+//                    int bufferSize = AudioRecord.getMinBufferSize(frequency, channelConfiguration, audioEncoding);
+                    int time = 10;
+                    int bufferSize = time * frequency / 2;
+                    Log.i("bufferSize:" , String.valueOf(bufferSize));
+                    AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, channelConfiguration, audioEncoding, bufferSize);
+                    byte[] buffer = new byte[bufferSize];
+                    audioRecord.startRecording();
+                    Log.i("开始","");
+                    while (isRecord) {
+                        String hols = "";
+                        int bufferReadResult = audioRecord.read(buffer, 0, bufferSize);
+//                        logD("buffer:" + new String(buffer));
+                      //  Log.i("buffer size %d",String.valueOf(buffer.length));
+                        Log.i("buffer size ",String.format("%d",buffer.length));
+
+                        byte[] markArr = new Detector().getSymbol(buffer, frequency, buffer.length, "", "");
+                        for(int a=0;a<markArr.length;a++){
+                            //Log.i("watermark in char",String.format(" %c",markArr[a]));
+                            hols+= String.format("%c",markArr[a]);
+                        }
+                        fos.write(buffer);
+
+                        Message msg = new Message();
+                        msg.setTarget(handler);
+                        Bundle mBundle = new Bundle();
+                        mBundle.putString("Data", df.format(new Date())+"  "+hols);//压入数据
+                        msg.setData(mBundle);
+                        handler.sendMessage(msg);
+                        Log.i("watermark in char",hols);
+                    }
+
+//            }
+                    audioRecord.stop();
+                    fos.flush();
+                    fos.close();
+                } catch (Throwable t) {
+                    String message = t.getMessage();
+                    Log.i("录音失败 :" , message);
+                }
+            }
+        }.start();
+    }
     }
