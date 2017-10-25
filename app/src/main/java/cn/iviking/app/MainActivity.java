@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
        button = (Button)findViewById(R.id.startButton);
        tv = (TextView)findViewById(R.id.tv);
+        tv.setMovementMethod(ScrollingMovementMethod.getInstance());
        // byte[] data = new byte[1024*1024];
        /* InputStream inStream = getResources().openRawResource(R.raw.watermark);
         Log.i("AAAA","读音频文件");
@@ -83,8 +85,10 @@ public class MainActivity extends AppCompatActivity {
         handler = new Handler(){
             @Override
             public void handleMessage(Message msg){
-                Log.i("CallBack: ",msg.getData().getCharSequence("Data").toString());
-                tv.setText(msg.getData().getCharSequence("Data"))    ;
+                String text = msg.getData().getCharSequence("Data").toString();
+                Log.i("CallBack: ",text);
+                //tv.setText(msg.getData().getCharSequence("Data"))    ;
+                tv.append(text+"\n");
             }
         };
     }
