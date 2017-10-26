@@ -1,12 +1,12 @@
-//apply plugin: 'com.android.application'
-apply plugin: 'com.android.library' //--用于生成jar
+apply plugin: 'com.android.application'
+//apply plugin: 'com.android.library' //--用于生成jar
 
 
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
-      // applicationId "cn.iviking.app" //生成jar时，去掉此行
+        applicationId "cn.iviking.app" //生成jar时，去掉此行
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
@@ -48,7 +48,7 @@ dependencies {
     compile 'com.android.support:design:26.+'
     testCompile 'junit:junit:4.12'
 }
-def SDK_NAME = "watermark";
+/*def SDK_NAME = "watermark";
 def SDK_VERSION = "_V1.0";
 def sdkDestinationPath = "build";
 def zipFile = file('build/intermediates/bundles/debug/classes.jar')
@@ -65,3 +65,4 @@ task makeJar(type: Jar) {
 }
 
 makeJar.dependsOn(deleteBuild, build)
+ */
