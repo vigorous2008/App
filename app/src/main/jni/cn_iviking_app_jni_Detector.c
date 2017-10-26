@@ -42,7 +42,7 @@ static emxArray_real_T *argInit_Unboundedx1_real_T(unsigned char * buf,int size)
         unsigned char bh = buf[2 * i + 1];
         short s= (short)((bh&0x00FF)<<8|bl&0x00FF);
         result->data[i] = round((double)s*10000/32768)/10000;
-    }
+    } 
 
     return result;
 }

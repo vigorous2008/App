@@ -16,7 +16,7 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_Detector_getString
   (JNIEnv *, jobject);
 
 /*
- * Class:     cn_iviking_app_jni_Detector
+ * Class:  cn_iviking_app_jni_Detector
  * Method:    getSymbol
  * Signature: ([BLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
  */
