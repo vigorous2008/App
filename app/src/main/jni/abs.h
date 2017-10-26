@@ -1,12 +1,12 @@
 /*
- * File: highp.h
+ * File: abs.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 09:40:42
+ * C/C++ source code generated on  : 26-Oct-2017 12:54:00
  */
 
-#ifndef HIGHP_H
-#define HIGHP_H
+#ifndef ABS_H
+#define ABS_H
 
 /* Include Files */
 #include <math.h>
@@ -18,12 +18,12 @@
 #include "extmessage_types.h"
 
 /* Function Declarations */
-extern void highp(const emxArray_real_T *x, emxArray_real_T *y);
+extern void b_abs(const boolean_T x_data[], double y_data[], int y_size[2]);
 
 #endif
 
 /*
- * File trailer for highp.h
+ * File trailer for abs.h
  *
  * [EOF]
  */

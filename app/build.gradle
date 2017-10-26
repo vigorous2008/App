@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.android.library'
+//apply plugin: 'com.android.library' --用于生成jar
 
 
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
-       applicationId "cn.iviking.app"
+       applicationId "cn.iviking.app" //生成jar时，去掉此行
         minSdkVersion 22
         targetSdkVersion 26
         versionCode 1
@@ -15,16 +15,16 @@ android {
         ndk {
             moduleName "watermark"         //生成的so名字
             ldLibs "log"
-            abiFilters "armeabi", "armeabi-v7a", "x86", "arm64-v8a", "x86_64" //输出指定三种abi体系结构下的so库。
-            //abiFilters "armeabi", "armeabi-v7a", "x86"  //输出指定三种abi体系结构下的so库。
+            // abiFilters "armeabi", "armeabi-v7a", "x86", "arm64-v8a", "x86_64" //输出指定三种abi体系结构下的so库。
+            abiFilters "armeabi", "armeabi-v7a", "x86"  //输出指定三种abi体系结构下的so库。
         }
     }
-/*
-  sourceSets.main {
+
+ /* sourceSets.main {
         jniLibs.srcDir 'src/main/libs'//如果确实会导致找不到.so的错误。
         jni.srcDirs = []
-    }
-*/
+  }*/
+
     buildTypes {
         release {
             minifyEnabled false
@@ -48,7 +48,7 @@ dependencies {
     compile 'com.android.support:design:26.+'
     testCompile 'junit:junit:4.12'
 }
-def SDK_NAME = "watermark";
+/*def SDK_NAME = "watermark";
 def SDK_VERSION = "_V1.0";
 def sdkDestinationPath = "build";
 def zipFile = file('build/intermediates/bundles/debug/classes.jar')
@@ -59,9 +59,9 @@ task deleteBuild(type: Delete) {
 
 task makeJar(type: Jar) {
     from zipTree(zipFile)
-    from fileTree(dir: 'src/main',includes: ['assets/**'])
+    from fileTree(dir: 'src/main',includes: ['assets*//**'])
     baseName = SDK_NAME + SDK_VERSION
     destinationDir = file(sdkDestinationPath)
 }
 
-makeJar.dependsOn(deleteBuild, build)
+makeJar.dependsOn(deleteBuild, build)*/

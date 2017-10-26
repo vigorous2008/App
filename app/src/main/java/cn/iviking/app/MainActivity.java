@@ -203,26 +203,32 @@ public class MainActivity extends AppCompatActivity {
                     FileOutputStream fos = new FileOutputStream(new File(file));
                     //输出流
 //                    int bufferSize = AudioRecord.getMinBufferSize(frequency, channelConfiguration, audioEncoding);
-                    int time = 10;
-                    int bufferSize = time * frequency / 2;
+                    int time = 5;
+                    int bufferSize = time * frequency * 2;
                     Log.i("bufferSize:" , String.valueOf(bufferSize));
                     AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, channelConfiguration, audioEncoding, bufferSize);
                     byte[] buffer = new byte[bufferSize];
                     audioRecord.startRecording();
                     Log.i("开始","");
+                    long t1,t2,t3,t4;
                     while (isRecord) {
                         String hols = "";
                         int bufferReadResult = audioRecord.read(buffer, 0, bufferSize);
 //                        logD("buffer:" + new String(buffer));
                       //  Log.i("buffer size %d",String.valueOf(buffer.length));
-                        Log.i("buffer size ",String.format("%d",buffer.length));
-
+                        Log.i("提交检测  buffer size ",String.format("%d",buffer.length));
+                        t1 = System.currentTimeMillis();
                         byte[] markArr = new Detector().getSymbol(buffer, frequency, buffer.length, "", "");
                         for(int a=0;a<markArr.length;a++){
                             //Log.i("watermark in char",String.format(" %c",markArr[a]));
                             hols+= String.format("%c",markArr[a]);
                         }
+                        t2 = System.currentTimeMillis();
+
                         fos.write(buffer);
+                        t3 = System.currentTimeMillis();
+                        Log.i(String.format("【%s】秒音频数据 watermark in char 【%s】",time,hols)," 检测耗时 "+String.valueOf((t2-t1))+" 毫秒 写文件耗时："+String.valueOf((t3-t2)));
+
 
                         Message msg = new Message();
                         msg.setTarget(handler);
@@ -230,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
                         mBundle.putString("Data", df.format(new Date())+"  "+hols);//压入数据
                         msg.setData(mBundle);
                         handler.sendMessage(msg);
-                        Log.i("watermark in char",hols);
                     }
 
 //            }
