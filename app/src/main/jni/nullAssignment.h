@@ -2,7 +2,7 @@
  * File: nullAssignment.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 20-Oct-2017 14:06:37
+ * C/C++ source code generated on  : 26-Oct-2017 12:54:00
  */
 
 #ifndef NULLASSIGNMENT_H
@@ -18,7 +18,7 @@
 #include "extmessage_types.h"
 
 /* Function Declarations */
-extern void nullAssignment(emxArray_real_T *x, const emxArray_int32_T *idx);
+extern void nullAssignment(emxArray_real_T *x, const int idx_size[2]);
 
 #endif
 

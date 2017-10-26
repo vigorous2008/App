@@ -2,16 +2,14 @@
  * File: extmessage.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 12:21:32
+ * C/C++ source code generated on  : 26-Oct-2017 12:54:00
  */
 
 /* Include Files */
 #include "rt_nonfinite.h"
 #include "extmessage.h"
 #include "extmessage_emxutil.h"
-#include "returnmsg.h"
-#include "filterpointer.h"
-#include "diff.h"
+#include "filterpointer2.h"
 #include "lx_smooth.h"
 #include "ifft.h"
 #include "fft.h"
@@ -83,19 +81,14 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   emxArray_uint32_T *idx;
   emxArray_real_T *sm;
   emxArray_real_T *b_y1;
-  emxArray_int32_T *ii;
-  emxArray_real_T *f_x;
   int b_sm[2];
   emxArray_boolean_T *ok;
-  emxArray_boolean_T *g_x;
-  emxArray_real_T *r0;
-  emxArray_real_T *h_x;
-  boolean_T exitg1;
+  emxArray_int32_T *r0;
+  emxArray_real_T *f_x;
   emxArray_real_T *b_varargin_1;
   double tmp_data[1];
-  int c_sm[2];
   emxArray_int32_T *r1;
-  emxArray_real_T *d_sm;
+  emxArray_real_T *c_sm;
   (void)fs;
   (void)channel;
   emxInit_real_T(&x, 1);
@@ -150,6 +143,10 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   }
 
   emxInit_creal_T(&b_x, 1);
+
+  /*  plot(data); */
+  /*  figure; */
+  /*  plot(x); */
   c_x[0] = x->size[0];
   d_x = *x;
   d_x.size = (int *)&c_x;
@@ -317,8 +314,6 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   /*  end */
   halfn = am->size[0];
   emxInit_real_T(&sm, 1);
-  emxInit_real_T(&b_y1, 1);
-  emxInit_int32_T1(&ii, 1);
   if (halfn == 0) {
     halfn = am->size[0];
     i = sm->size[0];
@@ -339,6 +334,8 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
     for (i = 0; i <= halfn; i++) {
       idx->data[idx->size[0] * i] = 1U + i;
     }
+
+    emxInit_real_T(&b_y1, 1);
 
     /*  if NaNs not all at end */
     halfn = am->size[0];
@@ -371,45 +368,48 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
       halfn++;
     }
 
-    i = ii->size[0];
-    ii->size[0] = halfn;
-    emxEnsureCapacity((emxArray__common *)ii, i, sizeof(int));
+    emxInit_int32_T1(&r0, 1);
+    i = r0->size[0];
+    r0->size[0] = halfn;
+    emxEnsureCapacity((emxArray__common *)r0, i, sizeof(int));
     halfn = 0;
     for (i = 0; i <= lastIndexToDouble; i++) {
-      ii->data[halfn] = i + 1;
+      r0->data[halfn] = i + 1;
       halfn++;
     }
 
-    emxInit_real_T(&h_x, 1);
-    i = h_x->size[0];
-    h_x->size[0] = ii->size[0];
-    emxEnsureCapacity((emxArray__common *)h_x, i, sizeof(double));
-    halfn = ii->size[0];
+    emxInit_real_T(&f_x, 1);
+    i = f_x->size[0];
+    f_x->size[0] = r0->size[0];
+    emxEnsureCapacity((emxArray__common *)f_x, i, sizeof(double));
+    halfn = r0->size[0];
     for (i = 0; i < halfn; i++) {
-      h_x->data[i] = x->data[ii->data[i] - 1];
+      f_x->data[i] = x->data[r0->data[i] - 1];
     }
 
     emxInit_real_T(&b_varargin_1, 1);
     i = b_varargin_1->size[0];
-    b_varargin_1->size[0] = ii->size[0];
+    b_varargin_1->size[0] = r0->size[0];
     emxEnsureCapacity((emxArray__common *)b_varargin_1, i, sizeof(double));
-    halfn = ii->size[0];
+    halfn = r0->size[0];
     for (i = 0; i < halfn; i++) {
-      b_varargin_1->data[i] = varargin_1->data[ii->data[i] - 1];
+      b_varargin_1->data[i] = varargin_1->data[r0->data[i] - 1];
     }
 
+    emxFree_int32_T(&r0);
     tmp_data[0] = 600.0;
-    moving(h_x, b_varargin_1, tmp_data, b_y1);
+    moving(f_x, b_varargin_1, tmp_data, b_y1);
     lastIndexToDouble = ok->size[0];
     halfn = 0;
     emxFree_real_T(&b_varargin_1);
-    emxFree_real_T(&h_x);
+    emxFree_real_T(&f_x);
     emxFree_boolean_T(&ok);
     for (i = 0; i < lastIndexToDouble; i++) {
       sm->data[i] = b_y1->data[halfn];
       halfn++;
     }
 
+    emxFree_real_T(&b_y1);
     emxInit_int32_T(&r1, 2);
     i = r1->size[0] * r1->size[1];
     r1->size[0] = 1;
@@ -420,21 +420,21 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
       r1->data[i] = (int)idx->data[i];
     }
 
-    emxInit_real_T(&d_sm, 1);
-    i = d_sm->size[0];
-    d_sm->size[0] = r1->size[0] * r1->size[1];
-    emxEnsureCapacity((emxArray__common *)d_sm, i, sizeof(double));
+    emxInit_real_T(&c_sm, 1);
+    i = c_sm->size[0];
+    c_sm->size[0] = r1->size[0] * r1->size[1];
+    emxEnsureCapacity((emxArray__common *)c_sm, i, sizeof(double));
     halfn = r1->size[0] * r1->size[1];
     for (i = 0; i < halfn; i++) {
-      d_sm->data[i] = sm->data[i];
+      c_sm->data[i] = sm->data[i];
     }
 
-    halfn = d_sm->size[0];
+    halfn = c_sm->size[0];
     for (i = 0; i < halfn; i++) {
-      sm->data[r1->data[i] - 1] = d_sm->data[i];
+      sm->data[r1->data[i] - 1] = c_sm->data[i];
     }
 
-    emxFree_real_T(&d_sm);
+    emxFree_real_T(&c_sm);
     emxFree_int32_T(&r1);
   }
 
@@ -442,98 +442,18 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   emxFree_real_T(&varargin_1);
   emxFree_real_T(&am);
   emxFree_real_T(&x);
-  emxInit_real_T1(&f_x, 2);
   b_sm[0] = sm->size[0];
   b_sm[1] = 1;
   d_x = *sm;
   d_x.size = (int *)&b_sm;
   d_x.numDimensions = 1;
-  b_diff(&d_x, f_x);
-  nx = f_x->size[0];
-  for (halfn = 0; halfn + 1 <= nx; halfn++) {
-    as = f_x->data[halfn];
-    if (f_x->data[halfn] < 0.0) {
-      as = -1.0;
-    } else if (f_x->data[halfn] > 0.0) {
-      as = 1.0;
-    } else {
-      if (f_x->data[halfn] == 0.0) {
-        as = 0.0;
-      }
-    }
+  filterpointer2(&d_x, msg);
 
-    f_x->data[halfn] = as;
-  }
-
-  emxInit_boolean_T1(&g_x, 2);
-  emxInit_real_T1(&r0, 2);
-  b_diff(f_x, r0);
-  i = g_x->size[0] * g_x->size[1];
-  g_x->size[0] = r0->size[0];
-  g_x->size[1] = 1;
-  emxEnsureCapacity((emxArray__common *)g_x, i, sizeof(boolean_T));
-  halfn = r0->size[0] * r0->size[1];
-  emxFree_real_T(&f_x);
-  for (i = 0; i < halfn; i++) {
-    g_x->data[i] = (r0->data[i] < 0.0);
-  }
-
-  emxFree_real_T(&r0);
-  nx = g_x->size[0];
-  lastIndexToDouble = 0;
-  i = ii->size[0];
-  ii->size[0] = g_x->size[0];
-  emxEnsureCapacity((emxArray__common *)ii, i, sizeof(int));
-  halfn = 1;
-  exitg1 = false;
-  while ((!exitg1) && (halfn <= nx)) {
-    if (g_x->data[halfn - 1]) {
-      lastIndexToDouble++;
-      ii->data[lastIndexToDouble - 1] = halfn;
-      if (lastIndexToDouble >= nx) {
-        exitg1 = true;
-      } else {
-        halfn++;
-      }
-    } else {
-      halfn++;
-    }
-  }
-
-  if (g_x->size[0] == 1) {
-    if (lastIndexToDouble == 0) {
-      i = ii->size[0];
-      ii->size[0] = 0;
-      emxEnsureCapacity((emxArray__common *)ii, i, sizeof(int));
-    }
-  } else {
-    i = ii->size[0];
-    if (1 > lastIndexToDouble) {
-      ii->size[0] = 0;
-    } else {
-      ii->size[0] = lastIndexToDouble;
-    }
-
-    emxEnsureCapacity((emxArray__common *)ii, i, sizeof(int));
-  }
-
-  emxFree_boolean_T(&g_x);
-  i = b_y1->size[0];
-  b_y1->size[0] = ii->size[0];
-  emxEnsureCapacity((emxArray__common *)b_y1, i, sizeof(double));
-  halfn = ii->size[0];
-  for (i = 0; i < halfn; i++) {
-    b_y1->data[i] = (double)ii->data[i] + 1.0;
-  }
-
-  emxFree_int32_T(&ii);
-  c_sm[0] = sm->size[0];
-  c_sm[1] = 1;
-  d_x = *sm;
-  d_x.size = (int *)&c_sm;
-  d_x.numDimensions = 1;
-  filterpointer(b_y1, &d_x);
-
+  /*  figure;hold on; */
+  /*  %plot(IndMin,sm(IndMin),'r^') */
+  /*  plot(IndMax,sm(IndMax),'k*') */
+  /*  plot(sm); */
+  /*  testshow(IndMax,sm); */
   /*  figure;grid; */
   /*  title('smooth'); */
   /*   plot(sm); */
@@ -603,9 +523,6 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   /*  tempI = IndMax(find(IndMax<270000)); */
   /*  plot(tempI-210000,sm(tempI),'k*'); */
   /*  plot(tempS); */
-  /*   testshow(IndMax,sm); */
-  returnmsg(b_y1, msg);
-
   /*  for i=2:length(IndMax) */
   /*  if IndMax(i)-IndMax(i-1) <2000 && IndMax(i) - IndMax(i-1)>1000 */
   /*  ge = [ge,1]; */
@@ -618,7 +535,6 @@ void extmessage(const emxArray_real_T *data, int fs, int channel,
   /*  ge = ge; */
   /*  end */
   /*  end */
-  emxFree_real_T(&b_y1);
   emxFree_real_T(&sm);
 }
 

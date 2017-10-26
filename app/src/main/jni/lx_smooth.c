@@ -2,7 +2,7 @@
  * File: lx_smooth.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 12:21:32
+ * C/C++ source code generated on  : 26-Oct-2017 12:54:00
  */
 
 /* Include Files */
@@ -90,7 +90,7 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
   emxArray_real_T *c_yy;
   emxArray_real_T *cbegin;
   int k;
-  double b_cbegin[797];
+  double b_cbegin[1797];
   int i1;
   int i;
   int i2;
@@ -138,22 +138,22 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
   if ((!xreps) && (!any(ynan))) {
     /*  simplest method for most common case */
     filter(y, c);
-    for (i0 = 0; i0 < 797; i0++) {
+    for (i0 = 0; i0 < 1797; i0++) {
       b_cbegin[i0] = y->data[i0];
     }
 
-    for (k = 0; k < 796; k++) {
+    for (k = 0; k < 1796; k++) {
       b_cbegin[k + 1] += b_cbegin[k];
     }
 
-    if (y->size[0] - 796 > y->size[0]) {
+    if (y->size[0] - 1796 > y->size[0]) {
       i0 = 1;
       i1 = 1;
       i2 = 0;
     } else {
       i0 = y->size[0];
       i1 = -1;
-      i2 = y->size[0] - 796;
+      i2 = y->size[0] - 1796;
     }
 
     i3 = yy->size[0];
@@ -201,8 +201,8 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
       i2 = 1;
     }
 
-    if (799 > c->size[0]) {
-      i3 = -798;
+    if (1799 > c->size[0]) {
+      i3 = -1798;
       k = 0;
     } else {
       i3 = 0;
@@ -220,17 +220,17 @@ void moving(const emxArray_real_T *x, const emxArray_real_T *y, double
     i0 = cbegin->size[0];
     cbegin->size[0] = k - i3;
     emxEnsureCapacity((emxArray__common *)cbegin, i0, sizeof(double));
-    for (i0 = 0; i0 < 399; i0++) {
+    for (i0 = 0; i0 < 899; i0++) {
       cbegin->data[i0] = b_cbegin[i0 << 1] / (1.0 + 2.0 * (double)i0);
     }
 
     loop_ub = k - i3;
-    for (i0 = 0; i0 <= loop_ub - 799; i0++) {
-      cbegin->data[i0 + 399] = c->data[(i3 + i0) + 798];
+    for (i0 = 0; i0 <= loop_ub - 1799; i0++) {
+      cbegin->data[i0 + 899] = c->data[(i3 + i0) + 1798];
     }
 
-    for (i0 = 0; i0 < 399; i0++) {
-      cbegin->data[((i0 + k) - i3) - 399] = c_yy->data[i0] / (797.0 + -2.0 *
+    for (i0 = 0; i0 < 899; i0++) {
+      cbegin->data[((i0 + k) - i3) - 899] = c_yy->data[i0] / (1797.0 + -2.0 *
         (double)i0);
     }
 
