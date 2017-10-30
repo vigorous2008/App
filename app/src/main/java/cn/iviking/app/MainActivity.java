@@ -18,6 +18,7 @@ import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.IOException;
@@ -195,12 +196,21 @@ public class MainActivity extends AppCompatActivity {
                 //16Bit
                 int audioEncoding = AudioFormat.ENCODING_PCM_16BIT;
                 //生成PCM文件
-                String path = Environment.getExternalStorageDirectory().getAbsolutePath();
-
+                String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/iviking/";
+                //path+"/iviking"
                 try {
-                    String file = path+"/"+dfHHMMSS.format(new Date())+"watermarkaudio.wav";
-                    Log.i("recorder: ",file);
-                    FileOutputStream fos = new FileOutputStream(new File(file));
+                    File rootPath = new File(path);
+                    if(!rootPath.exists()){
+                        rootPath.mkdir();
+                    }
+                    String timeStr = dfHHMMSS.format(new Date());
+                    String audioFile = path+timeStr+"audio.wav";
+                    String markFile = path+timeStr+"audio.txt";
+
+                    Log.i("recorder: ",audioFile);
+                    FileOutputStream fos = new FileOutputStream(new File(audioFile));
+                   // FileOutputStream markFos = new FileOutputStream(new File(markFile));
+                    FileWriter writer = new FileWriter(new File(markFile));
                     //输出流
 //                    int bufferSize = AudioRecord.getMinBufferSize(frequency, channelConfiguration, audioEncoding);
                     int time = 5;
@@ -227,8 +237,10 @@ public class MainActivity extends AppCompatActivity {
 
                         fos.write(buffer);
                         t3 = System.currentTimeMillis();
-                        Log.i(String.format("【%s】秒音频数据 watermark in char 【%s】",time,hols)," 检测耗时 "+String.valueOf((t2-t1))+" 毫秒 写文件耗时："+String.valueOf((t3-t2)));
-
+                        String retStr = String.format("%s 【%s】秒音频数据 watermark in char 【%s】 检测耗时【%s】毫秒 写文件耗时【%s】 \n",df.format(new Date()),time,hols,String.valueOf((t2-t1)),String.valueOf((t3-t2)));
+                        Log.i("",retStr);
+                        writer.write(retStr);
+                        writer.flush();
 
                         Message msg = new Message();
                         msg.setTarget(handler);

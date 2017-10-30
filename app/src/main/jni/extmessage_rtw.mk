@@ -2,7 +2,7 @@
 ## Makefile generated for MATLAB file/project 'extmessage'. 
 ## 
 ## Makefile     : extmessage_rtw.mk
-## Generated on : Thu Oct 26 12:54:10 2017
+## Generated on : Wed Oct 25 12:21:40 2017
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
@@ -166,7 +166,7 @@ DEFINES =
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(START_DIR)codegenlibextmessageextmessage_initialize.c $(START_DIR)codegenlibextmessageextmessage_terminate.c $(START_DIR)codegenlibextmessageextmessage.c $(START_DIR)codegenlibextmessageabs.c $(START_DIR)codegenlibextmessagefft.c $(START_DIR)codegenlibextmessagefilter.c $(START_DIR)codegenlibextmessageifft.c $(START_DIR)codegenlibextmessagelx_smooth.c $(START_DIR)codegenlibextmessagediff.c $(START_DIR)codegenlibextmessageany.c $(START_DIR)codegenlibextmessagefilterpointer2.c $(START_DIR)codegenlibextmessagemean.c $(START_DIR)codegenlibextmessagesign.c $(START_DIR)codegenlibextmessagenullAssignment.c $(START_DIR)codegenlibextmessagesort1.c $(START_DIR)codegenlibextmessagesortIdx.c $(START_DIR)codegenlibextmessagemod.c $(START_DIR)codegenlibextmessageextmessage_emxutil.c $(START_DIR)codegenlibextmessageextmessage_emxAPI.c $(START_DIR)codegenlibextmessagert_nonfinite.c $(START_DIR)codegenlibextmessagertGetNaN.c $(START_DIR)codegenlibextmessagertGetInf.c
+SRCS = $(START_DIR)codegenlibextmessageextmessage_initialize.c $(START_DIR)codegenlibextmessageextmessage_terminate.c $(START_DIR)codegenlibextmessageextmessage.c $(START_DIR)codegenlibextmessagefft.c $(START_DIR)codegenlibextmessagefilter.c $(START_DIR)codegenlibextmessageifft.c $(START_DIR)codegenlibextmessagelx_smooth.c $(START_DIR)codegenlibextmessagediff.c $(START_DIR)codegenlibextmessageany.c $(START_DIR)codegenlibextmessagefilterpointer.c $(START_DIR)codegenlibextmessagereturnmsg.c $(START_DIR)codegenlibextmessageextmessage_emxutil.c $(START_DIR)codegenlibextmessageextmessage_emxAPI.c $(START_DIR)codegenlibextmessagert_nonfinite.c $(START_DIR)codegenlibextmessagertGetNaN.c $(START_DIR)codegenlibextmessagertGetInf.c
 
 ALL_SRCS = 
 
@@ -174,7 +174,7 @@ ALL_SRCS =
 ## OBJECTS
 ###########################################################################
 
-OBJS = extmessage_initialize.o extmessage_terminate.o extmessage.o abs.o fft.o filter.o ifft.o lx_smooth.o diff.o any.o filterpointer2.o mean.o sign.o nullAssignment.o sort1.o sortIdx.o mod.o extmessage_emxutil.o extmessage_emxAPI.o rt_nonfinite.o rtGetNaN.o rtGetInf.o
+OBJS = extmessage_initialize.o extmessage_terminate.o extmessage.o fft.o filter.o ifft.o lx_smooth.o diff.o any.o filterpointer.o returnmsg.o extmessage_emxutil.o extmessage_emxAPI.o rt_nonfinite.o rtGetNaN.o rtGetInf.o
 
 ALL_OBJS = 
 
@@ -309,10 +309,6 @@ extmessage.o : $(START_DIR)codegenlibextmessageextmessage.c
 	   "$@" $(subst ,/,"$<")
 
 
-abs.o : $(START_DIR)codegenlibextmessageabs.c
-	   "$@" $(subst ,/,"$<")
-
-
 fft.o : $(START_DIR)codegenlibextmessagefft.c
 	   "$@" $(subst ,/,"$<")
 
@@ -337,31 +333,11 @@ any.o : $(START_DIR)codegenlibextmessageany.c
 	   "$@" $(subst ,/,"$<")
 
 
-filterpointer2.o : $(START_DIR)codegenlibextmessagefilterpointer2.c
+filterpointer.o : $(START_DIR)codegenlibextmessagefilterpointer.c
 	   "$@" $(subst ,/,"$<")
 
 
-mean.o : $(START_DIR)codegenlibextmessagemean.c
-	   "$@" $(subst ,/,"$<")
-
-
-sign.o : $(START_DIR)codegenlibextmessagesign.c
-	   "$@" $(subst ,/,"$<")
-
-
-nullAssignment.o : $(START_DIR)codegenlibextmessagenullAssignment.c
-	   "$@" $(subst ,/,"$<")
-
-
-sort1.o : $(START_DIR)codegenlibextmessagesort1.c
-	   "$@" $(subst ,/,"$<")
-
-
-sortIdx.o : $(START_DIR)codegenlibextmessagesortIdx.c
-	   "$@" $(subst ,/,"$<")
-
-
-mod.o : $(START_DIR)codegenlibextmessagemod.c
+returnmsg.o : $(START_DIR)codegenlibextmessagereturnmsg.c
 	   "$@" $(subst ,/,"$<")
 
 

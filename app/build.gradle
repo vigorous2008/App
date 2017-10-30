@@ -22,6 +22,7 @@ android {
 
  /* sourceSets.main {
         jniLibs.srcDir 'src/main/libs'//如果确实会导致找不到.so的错误。
+       // jni.srcDirs = ['src/main/jni', 'src/main/jni/']
         jni.srcDirs = []
   }*/
 
@@ -51,7 +52,7 @@ dependencies {
 /*def SDK_NAME = "watermark";
 def SDK_VERSION = "_V1.0";
 def sdkDestinationPath = "build";
-def zipFile = file('build/intermediates/bundles/debug/classes.jar')
+def zipFile = file('build/intermediates/bundles/default/classes.jar')
 
 task deleteBuild(type: Delete) {
     delete sdkDestinationPath + SDK_NAME + SDK_VERSION + ".jar"
