@@ -17,8 +17,11 @@ import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.IOException;
@@ -60,28 +63,44 @@ public class MainActivity extends AppCompatActivity {
        tv = (TextView)findViewById(R.id.tv);
         tv.setMovementMethod(ScrollingMovementMethod.getInstance());
        // byte[] data = new byte[1024*1024];
-       /* InputStream inStream = getResources().openRawResource(R.raw.watermark);
-        Log.i("AAAA","读音频文件");
-        ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
-        byte[] buff = new byte[100];
-        int rc = 0;
-        try {
-            while ((rc = inStream.read(buff, 0, 100)) > 0) {
-                swapStream.write(buff, 0, rc);
+       String audioDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/iviking/";
+        File dir = new File(audioDirectory);
+        if(dir.isDirectory()){
+            MyFilter myFilter = new MyFilter(".wav");
+            File[] files = dir.listFiles(myFilter);
+            for(File wav : files){
+                FileInputStream inStream = null;
+                try {
+                    inStream = new FileInputStream(wav);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Log.i("AAAA","读音频文件"+wav.getAbsolutePath());
+                ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
+                byte[] buff = new byte[100];
+                int rc = 0;
+                try {
+                    while ((rc = inStream.read(buff, 0, 100)) > 0) {
+                        swapStream.write(buff, 0, rc);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                byte[] audioData = swapStream.toByteArray();
+                Log.i("AAAA",String.format("pcm length %d",audioData.length) );
+                byte[] byteArr = new Detector().getSymbol(audioData,44100,audioData.length,"0","0");
+                String mark = "";
+                for(int a=0;a<byteArr.length;a++){
+                   // Log.i("watermark in char",String.format(" %c",byteArr[a]));
+                    mark+= String.format(" %c",byteArr[a]);
+                }
+                Log.i("mark String",String.format("【%s】 【%s】",mark,wav.getName()));
+                tv.append(mark);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        byte[] audioData = swapStream.toByteArray();
-        Log.i("AAAA",String.format("pcm length %d",audioData.length) );
-       byte[] byteArr = new Detector().getSymbol(audioData,44100,audioData.length,"0","0");
-        String mark = "";
-        for(int a=0;a<byteArr.length;a++){
-            Log.i("watermark in char",String.format(" %c",byteArr[a]));
-            mark+= String.format(" %c",byteArr[a]);
-        }
-        Log.i("mark String",mark);
-        tv.setText(mark);*/
+
+
+
         Log.i("AAAA","00000000000---0000000000");
         handler = new Handler(){
             @Override
@@ -208,12 +227,11 @@ public class MainActivity extends AppCompatActivity {
                     String markFile = path+timeStr+"audio.txt";
 
                     Log.i("recorder: ",audioFile);
-                    FileOutputStream fos = new FileOutputStream(new File(audioFile));
                    // FileOutputStream markFos = new FileOutputStream(new File(markFile));
                     FileWriter writer = new FileWriter(new File(markFile));
                     //输出流
 //                    int bufferSize = AudioRecord.getMinBufferSize(frequency, channelConfiguration, audioEncoding);
-                    int time = 5;
+                    int time = 15;
                     int bufferSize = time * frequency * 2;
                     Log.i("bufferSize:" , String.valueOf(bufferSize));
                     AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, channelConfiguration, audioEncoding, bufferSize);
@@ -221,26 +239,36 @@ public class MainActivity extends AppCompatActivity {
                     audioRecord.startRecording();
                     Log.i("开始","");
                     long t1,t2,t3,t4;
+                    int i = 0;
                     while (isRecord) {
                         String hols = "";
                         int bufferReadResult = audioRecord.read(buffer, 0, bufferSize);
 //                        logD("buffer:" + new String(buffer));
                       //  Log.i("buffer size %d",String.valueOf(buffer.length));
-                        Log.i("提交检测  buffer size ",String.format("%d",buffer.length));
+                        //Log.i("提交检测  buffer size ",String.format("%d",buffer.length));
                         t1 = System.currentTimeMillis();
+                        FileOutputStream fos = new FileOutputStream(new File(audioFile));
+                        fos.write(buffer);
+                        fos.flush();
+                        fos.close();
+
                         byte[] markArr = new Detector().getSymbol(buffer, frequency, buffer.length, "", "");
                         for(int a=0;a<markArr.length;a++){
                             //Log.i("watermark in char",String.format(" %c",markArr[a]));
                             hols+= String.format("%c",markArr[a]);
                         }
+                        i++;
                         t2 = System.currentTimeMillis();
 
-                        fos.write(buffer);
+
                         t3 = System.currentTimeMillis();
-                        String retStr = String.format("%s 【%s】秒音频数据 watermark in char 【%s】 检测耗时【%s】毫秒 写文件耗时【%s】 \n",df.format(new Date()),time,hols,String.valueOf((t2-t1)),String.valueOf((t3-t2)));
-                        Log.i("",retStr);
+                        String retStr = String.format("%s 【%s】秒音频数据 watermark in char 【%s】 检测耗时【%s】毫秒 写文件耗时 【%s】【%s】\n",df.format(new Date()),time,hols,String.valueOf((t2-t1)),String.valueOf((t3-t2)),audioFile);
+                        Log.i("watermark " ,retStr);
                         writer.write(retStr);
                         writer.flush();
+
+                        timeStr = dfHHMMSS.format(new Date());
+                        audioFile = path+timeStr+"_"+i+"_audio.wav";
 
                         Message msg = new Message();
                         msg.setTarget(handler);
@@ -252,8 +280,8 @@ public class MainActivity extends AppCompatActivity {
 
 //            }
                     audioRecord.stop();
-                    fos.flush();
-                    fos.close();
+                    writer.close();
+
                 } catch (Throwable t) {
                     String message = t.getMessage();
                     Log.i("录音失败 :" , message);
@@ -262,3 +290,12 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
     }
+ class MyFilter implements FilenameFilter{
+    private String type;
+    public MyFilter(String type){
+        this.type = type;
+    }
+    public boolean accept(File dir,String name){
+        return name.endsWith(type);
+    }
+}
