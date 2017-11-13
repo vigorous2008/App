@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
        tv = (TextView)findViewById(R.id.tv);
         tv.setMovementMethod(ScrollingMovementMethod.getInstance());
        // byte[] data = new byte[1024*1024];
+        /*
        String audioDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/iviking/";
         File dir = new File(audioDirectory);
         if(dir.isDirectory()){
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 tv.append(mark);
             }
         }
-
+    */
 
 
         Log.i("AAAA","00000000000---0000000000");
@@ -146,59 +147,6 @@ public class MainActivity extends AppCompatActivity {
             StartRecord();
         }
     }
-    private void startRecord() {
-        in = new PipedInputStream();
-        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-                    mm = new IvikingAudio(MainActivity.this, in);
-                    mm.StartAudioData();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-        int len = 0;
-        int pos = 0;
-        final int BUFFER_SIZE = 44100*2*3;
-        byte[] data = new byte[BUFFER_SIZE];
-
-        while (true){
-            try{
-                if(pos+len<BUFFER_SIZE){
-                    len =in.read(data,pos+len,in.available());
-                    pos = pos +len;
-                    Log.i("data from mic",String.valueOf(len));
-                }else{
-                    byte[] markArr = new Detector().getSymbol(data,44100,data.length,"3","4");
-                    String hols="";
-                    Log.i("watermark from MIC",new String(markArr));
-                    for(int a=0;a<markArr.length;a++){
-                        Log.i("watermark in char",String.format(" %c",markArr[a]));
-                        hols+= String.format(" %c",markArr[a]);
-                    }
-
-                    // tv.setText(df.format(new Date())+" "+mark);
-                    Message msg = new Message();
-                    msg.setTarget(handler);
-                    Bundle mBundle = new Bundle();
-                    mBundle.putString("Data", df.format(new Date())+hols);//压入数据
-                    msg.setData(mBundle);
-                    handler.sendMessage(msg);
-                    pos = 0;
-                    data = new byte[BUFFER_SIZE];
-                }
-
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-        }
-     }
     public void StartRecord() {
         final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         final DateFormat dfHHMMSS = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -231,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                     FileWriter writer = new FileWriter(new File(markFile));
                     //输出流
 //                    int bufferSize = AudioRecord.getMinBufferSize(frequency, channelConfiguration, audioEncoding);
-                    int time = 15;
+                    int time = 10;
                     int bufferSize = time * frequency * 2;
                     Log.i("bufferSize:" , String.valueOf(bufferSize));
                     AudioRecord audioRecord = new AudioRecord(MediaRecorder.AudioSource.MIC, frequency, channelConfiguration, audioEncoding, bufferSize);
