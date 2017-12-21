@@ -1,12 +1,12 @@
 /*
- * File: extmessage_types.h
+ * File: extmessage2_types.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 12:21:32
+ * C/C++ source code generated on  : 07-Nov-2017 15:17:32
  */
 
-#ifndef EXTMESSAGE_TYPES_H
-#define EXTMESSAGE_TYPES_H
+#ifndef EXTMESSAGE2_TYPES_H
+#define EXTMESSAGE2_TYPES_H
 
 /* Include Files */
 #include "rtwtypes.h"
@@ -117,6 +117,27 @@ typedef struct emxArray_int32_T emxArray_int32_T;
 
 #endif                                 /*typedef_emxArray_int32_T*/
 
+#ifndef struct_emxArray_int8_T
+#define struct_emxArray_int8_T
+
+struct emxArray_int8_T
+{
+  signed char *data;
+  int *size;
+  int allocatedSize;
+  int numDimensions;
+  boolean_T canFreeData;
+};
+
+#endif                                 /*struct_emxArray_int8_T*/
+
+#ifndef typedef_emxArray_int8_T
+#define typedef_emxArray_int8_T
+
+typedef struct emxArray_int8_T emxArray_int8_T;
+
+#endif                                 /*typedef_emxArray_int8_T*/
+
 #ifndef struct_emxArray_real_T
 #define struct_emxArray_real_T
 
@@ -137,31 +158,10 @@ struct emxArray_real_T
 typedef struct emxArray_real_T emxArray_real_T;
 
 #endif                                 /*typedef_emxArray_real_T*/
-
-#ifndef struct_emxArray_uint32_T
-#define struct_emxArray_uint32_T
-
-struct emxArray_uint32_T
-{
-  unsigned int *data;
-  int *size;
-  int allocatedSize;
-  int numDimensions;
-  boolean_T canFreeData;
-};
-
-#endif                                 /*struct_emxArray_uint32_T*/
-
-#ifndef typedef_emxArray_uint32_T
-#define typedef_emxArray_uint32_T
-
-typedef struct emxArray_uint32_T emxArray_uint32_T;
-
-#endif                                 /*typedef_emxArray_uint32_T*/
 #endif
 
 /*
- * File trailer for extmessage_types.h
+ * File trailer for extmessage2_types.h
  *
  * [EOF]
  */

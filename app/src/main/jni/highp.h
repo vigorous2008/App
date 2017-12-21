@@ -1,12 +1,12 @@
 /*
- * File: filter.h
+ * File: highp.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 12:21:32
+ * C/C++ source code generated on  : 07-Nov-2017 15:17:32
  */
 
-#ifndef FILTER_H
-#define FILTER_H
+#ifndef HIGHP_H
+#define HIGHP_H
 
 /* Include Files */
 #include <math.h>
@@ -15,15 +15,15 @@
 #include <string.h>
 #include "rt_nonfinite.h"
 #include "rtwtypes.h"
-#include "extmessage_types.h"
+#include "extmessage2_types.h"
 
 /* Function Declarations */
-extern void filter(const emxArray_real_T *x, emxArray_real_T *y);
+extern void highp(const emxArray_real_T *x, emxArray_real_T *y);
 
 #endif
 
 /*
- * File trailer for filter.h
+ * File trailer for highp.h
  *
  * [EOF]
  */

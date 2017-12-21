@@ -1,14 +1,14 @@
 /*
- * File: extmessage_emxutil.c
+ * File: extmessage2_emxutil.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 12:21:32
+ * C/C++ source code generated on  : 07-Nov-2017 15:17:32
  */
 
 /* Include Files */
 #include "rt_nonfinite.h"
-#include "extmessage.h"
-#include "extmessage_emxutil.h"
+#include "extmessage2.h"
+#include "extmessage2_emxutil.h"
 
 /* Function Definitions */
 
@@ -131,6 +131,24 @@ void emxFree_int32_T(emxArray_int32_T **pEmxArray)
 }
 
 /*
+ * Arguments    : emxArray_int8_T **pEmxArray
+ * Return Type  : void
+ */
+void emxFree_int8_T(emxArray_int8_T **pEmxArray)
+{
+  if (*pEmxArray != (emxArray_int8_T *)NULL) {
+    if (((*pEmxArray)->data != (signed char *)NULL) && (*pEmxArray)->canFreeData)
+    {
+      free((void *)(*pEmxArray)->data);
+    }
+
+    free((void *)(*pEmxArray)->size);
+    free((void *)*pEmxArray);
+    *pEmxArray = (emxArray_int8_T *)NULL;
+  }
+}
+
+/*
  * Arguments    : emxArray_real_T **pEmxArray
  * Return Type  : void
  */
@@ -148,50 +166,11 @@ void emxFree_real_T(emxArray_real_T **pEmxArray)
 }
 
 /*
- * Arguments    : emxArray_uint32_T **pEmxArray
- * Return Type  : void
- */
-void emxFree_uint32_T(emxArray_uint32_T **pEmxArray)
-{
-  if (*pEmxArray != (emxArray_uint32_T *)NULL) {
-    if (((*pEmxArray)->data != (unsigned int *)NULL) && (*pEmxArray)
-        ->canFreeData) {
-      free((void *)(*pEmxArray)->data);
-    }
-
-    free((void *)(*pEmxArray)->size);
-    free((void *)*pEmxArray);
-    *pEmxArray = (emxArray_uint32_T *)NULL;
-  }
-}
-
-/*
  * Arguments    : emxArray_boolean_T **pEmxArray
  *                int numDimensions
  * Return Type  : void
  */
 void emxInit_boolean_T(emxArray_boolean_T **pEmxArray, int numDimensions)
-{
-  emxArray_boolean_T *emxArray;
-  int i;
-  *pEmxArray = (emxArray_boolean_T *)malloc(sizeof(emxArray_boolean_T));
-  emxArray = *pEmxArray;
-  emxArray->data = (boolean_T *)NULL;
-  emxArray->numDimensions = numDimensions;
-  emxArray->size = (int *)malloc((unsigned int)(sizeof(int) * numDimensions));
-  emxArray->allocatedSize = 0;
-  emxArray->canFreeData = true;
-  for (i = 0; i < numDimensions; i++) {
-    emxArray->size[i] = 0;
-  }
-}
-
-/*
- * Arguments    : emxArray_boolean_T **pEmxArray
- *                int numDimensions
- * Return Type  : void
- */
-void emxInit_boolean_T1(emxArray_boolean_T **pEmxArray, int numDimensions)
 {
   emxArray_boolean_T *emxArray;
   int i;
@@ -292,6 +271,27 @@ void emxInit_int32_T1(emxArray_int32_T **pEmxArray, int numDimensions)
 }
 
 /*
+ * Arguments    : emxArray_int8_T **pEmxArray
+ *                int numDimensions
+ * Return Type  : void
+ */
+void emxInit_int8_T(emxArray_int8_T **pEmxArray, int numDimensions)
+{
+  emxArray_int8_T *emxArray;
+  int i;
+  *pEmxArray = (emxArray_int8_T *)malloc(sizeof(emxArray_int8_T));
+  emxArray = *pEmxArray;
+  emxArray->data = (signed char *)NULL;
+  emxArray->numDimensions = numDimensions;
+  emxArray->size = (int *)malloc((unsigned int)(sizeof(int) * numDimensions));
+  emxArray->allocatedSize = 0;
+  emxArray->canFreeData = true;
+  for (i = 0; i < numDimensions; i++) {
+    emxArray->size[i] = 0;
+  }
+}
+
+/*
  * Arguments    : emxArray_real_T **pEmxArray
  *                int numDimensions
  * Return Type  : void
@@ -334,28 +334,7 @@ void emxInit_real_T1(emxArray_real_T **pEmxArray, int numDimensions)
 }
 
 /*
- * Arguments    : emxArray_uint32_T **pEmxArray
- *                int numDimensions
- * Return Type  : void
- */
-void emxInit_uint32_T(emxArray_uint32_T **pEmxArray, int numDimensions)
-{
-  emxArray_uint32_T *emxArray;
-  int i;
-  *pEmxArray = (emxArray_uint32_T *)malloc(sizeof(emxArray_uint32_T));
-  emxArray = *pEmxArray;
-  emxArray->data = (unsigned int *)NULL;
-  emxArray->numDimensions = numDimensions;
-  emxArray->size = (int *)malloc((unsigned int)(sizeof(int) * numDimensions));
-  emxArray->allocatedSize = 0;
-  emxArray->canFreeData = true;
-  for (i = 0; i < numDimensions; i++) {
-    emxArray->size[i] = 0;
-  }
-}
-
-/*
- * File trailer for extmessage_emxutil.c
+ * File trailer for extmessage2_emxutil.c
  *
  * [EOF]
  */

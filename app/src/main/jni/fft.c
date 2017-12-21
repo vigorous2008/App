@@ -2,14 +2,14 @@
  * File: fft.c
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 12:21:32
+ * C/C++ source code generated on  : 07-Nov-2017 15:17:32
  */
 
 /* Include Files */
 #include "rt_nonfinite.h"
-#include "extmessage.h"
+#include "extmessage2.h"
 #include "fft.h"
-#include "extmessage_emxutil.h"
+#include "extmessage2_emxutil.h"
 #include "ifft.h"
 
 /* Function Declarations */
@@ -121,63 +121,90 @@ static void generate_twiddle_tables(int nRows, boolean_T useRadix2,
 
 /*
  * Arguments    : const emxArray_real_T *x
+ *                double varargin_1
  *                emxArray_creal_T *y
  * Return Type  : void
  */
-void fft(const emxArray_real_T *x, emxArray_creal_T *y)
+void fft(const emxArray_real_T *x, double varargin_1, emxArray_creal_T *y)
 {
-  int n1;
   emxArray_real_T *costab;
-  int nInt2;
   emxArray_real_T *sintab;
   emxArray_real_T *sintabinv;
+  emxArray_creal_T *wwc;
+  emxArray_creal_T *fy;
+  emxArray_creal_T *fv;
   boolean_T useRadix2;
+  int nInt2;
   int N2blue;
   int idx;
-  emxArray_creal_T *wwc;
   int nInt2m1;
-  int nRowsD2;
-  int nRowsD4;
-  int rt;
   int ihi;
-  int istart;
+  int nRowsD2;
+  int rt;
+  int nRowsD4;
+  int j;
   double nt_im;
   double nt_re;
   double temp_re;
   double temp_im;
-  emxArray_creal_T *fy;
-  emxArray_creal_T *fv;
   double fv_re;
   double fv_im;
   double wwc_im;
   double b_fv_re;
-  n1 = x->size[0];
-  if (x->size[0] == 0) {
+  emxInit_real_T1(&costab, 2);
+  emxInit_real_T1(&sintab, 2);
+  emxInit_real_T1(&sintabinv, 2);
+  emxInit_creal_T(&wwc, 1);
+  emxInit_creal_T(&fy, 1);
+  emxInit_creal_T(&fv, 1);
+  if ((x->size[0] == 0) || ((int)varargin_1 == 0)) {
     nInt2 = y->size[0];
-    y->size[0] = 0;
+    y->size[0] = (int)varargin_1;
     emxEnsureCapacity((emxArray__common *)y, nInt2, sizeof(creal_T));
+    if ((int)varargin_1 > x->size[0]) {
+      ihi = y->size[0];
+      nInt2 = y->size[0];
+      y->size[0] = ihi;
+      emxEnsureCapacity((emxArray__common *)y, nInt2, sizeof(creal_T));
+      for (nInt2 = 0; nInt2 < ihi; nInt2++) {
+        y->data[nInt2].re = 0.0;
+        y->data[nInt2].im = 0.0;
+      }
+    }
   } else {
-    emxInit_real_T1(&costab, 2);
-    emxInit_real_T1(&sintab, 2);
-    emxInit_real_T1(&sintabinv, 2);
-    useRadix2 = ((x->size[0] & (x->size[0] - 1)) == 0);
-    get_algo_sizes(x->size[0], useRadix2, &N2blue, &idx);
+    useRadix2 = (((int)varargin_1 & ((int)varargin_1 - 1)) == 0);
+    get_algo_sizes((int)varargin_1, useRadix2, &N2blue, &idx);
     generate_twiddle_tables(idx, useRadix2, costab, sintab, sintabinv);
     if (useRadix2) {
-      nInt2m1 = x->size[0];
-      nRowsD2 = x->size[0] / 2;
-      nRowsD4 = nRowsD2 / 2;
       idx = x->size[0];
+      nInt2m1 = (int)varargin_1;
+      if (idx < nInt2m1) {
+        nInt2m1 = idx;
+      }
+
+      nRowsD2 = (int)varargin_1 / 2;
+      nRowsD4 = nRowsD2 / 2;
       nInt2 = y->size[0];
-      y->size[0] = idx;
+      y->size[0] = (int)varargin_1;
       emxEnsureCapacity((emxArray__common *)y, nInt2, sizeof(creal_T));
+      if ((int)varargin_1 > x->size[0]) {
+        ihi = y->size[0];
+        nInt2 = y->size[0];
+        y->size[0] = ihi;
+        emxEnsureCapacity((emxArray__common *)y, nInt2, sizeof(creal_T));
+        for (nInt2 = 0; nInt2 < ihi; nInt2++) {
+          y->data[nInt2].re = 0.0;
+          y->data[nInt2].im = 0.0;
+        }
+      }
+
       rt = 0;
       nInt2 = 0;
       idx = 0;
       for (N2blue = 1; N2blue < nInt2m1; N2blue++) {
         y->data[idx].re = x->data[rt];
         y->data[idx].im = 0.0;
-        idx = n1;
+        idx = (int)varargin_1;
         useRadix2 = true;
         while (useRadix2) {
           idx >>= 1;
@@ -191,8 +218,8 @@ void fft(const emxArray_real_T *x, emxArray_creal_T *y)
 
       y->data[idx].re = x->data[rt];
       y->data[idx].im = 0.0;
-      if (x->size[0] > 1) {
-        for (N2blue = 0; N2blue <= n1 - 2; N2blue += 2) {
+      if ((int)varargin_1 > 1) {
+        for (N2blue = 0; N2blue <= (int)varargin_1 - 2; N2blue += 2) {
           temp_re = y->data[N2blue + 1].re;
           temp_im = y->data[N2blue + 1].im;
           y->data[N2blue + 1].re = y->data[N2blue].re - y->data[N2blue + 1].re;
@@ -215,12 +242,12 @@ void fft(const emxArray_real_T *x, emxArray_creal_T *y)
           y->data[N2blue].im += temp_im;
         }
 
-        istart = 1;
-        for (nInt2m1 = nRowsD4; nInt2m1 < nRowsD2; nInt2m1 += nRowsD4) {
-          nt_re = costab->data[nInt2m1];
-          nt_im = sintab->data[nInt2m1];
-          N2blue = istart;
-          ihi = istart + nInt2;
+        nInt2m1 = 1;
+        for (j = nRowsD4; j < nRowsD2; j += nRowsD4) {
+          nt_re = costab->data[j];
+          nt_im = sintab->data[j];
+          N2blue = nInt2m1;
+          ihi = nInt2m1 + nInt2;
           while (N2blue < ihi) {
             temp_re = nt_re * y->data[N2blue + idx].re - nt_im * y->data[N2blue
               + idx].im;
@@ -233,7 +260,7 @@ void fft(const emxArray_real_T *x, emxArray_creal_T *y)
             N2blue += rt;
           }
 
-          istart++;
+          nInt2m1++;
         }
 
         nRowsD4 /= 2;
@@ -242,25 +269,24 @@ void fft(const emxArray_real_T *x, emxArray_creal_T *y)
         nInt2 -= idx;
       }
     } else {
-      emxInit_creal_T(&wwc, 1);
-      nInt2m1 = (x->size[0] + x->size[0]) - 1;
+      nInt2m1 = ((int)varargin_1 + (int)varargin_1) - 1;
       nInt2 = wwc->size[0];
       wwc->size[0] = nInt2m1;
       emxEnsureCapacity((emxArray__common *)wwc, nInt2, sizeof(creal_T));
-      idx = x->size[0];
+      idx = (int)varargin_1;
       rt = 0;
-      wwc->data[x->size[0] - 1].re = 1.0;
-      wwc->data[x->size[0] - 1].im = 0.0;
-      nInt2 = x->size[0] << 1;
-      for (ihi = 1; ihi < n1; ihi++) {
-        istart = (ihi << 1) - 1;
-        if (nInt2 - rt <= istart) {
-          rt += istart - nInt2;
+      wwc->data[(int)varargin_1 - 1].re = 1.0;
+      wwc->data[(int)varargin_1 - 1].im = 0.0;
+      nInt2 = (int)varargin_1 << 1;
+      for (j = 1; j < (int)varargin_1; j++) {
+        ihi = (j << 1) - 1;
+        if (nInt2 - rt <= ihi) {
+          rt += ihi - nInt2;
         } else {
-          rt += istart;
+          rt += ihi;
         }
 
-        nt_im = -3.1415926535897931 * (double)rt / (double)x->size[0];
+        nt_im = -3.1415926535897931 * (double)rt / (double)(int)varargin_1;
         if (nt_im == 0.0) {
           nt_re = 1.0;
           nt_im = 0.0;
@@ -275,33 +301,46 @@ void fft(const emxArray_real_T *x, emxArray_creal_T *y)
       }
 
       idx = 0;
-      for (ihi = nInt2m1 - 1; ihi >= n1; ihi--) {
-        wwc->data[ihi] = wwc->data[idx];
+      for (j = nInt2m1 - 1; j >= (int)varargin_1; j--) {
+        wwc->data[j] = wwc->data[idx];
         idx++;
       }
 
+      idx = (int)varargin_1;
       rt = x->size[0];
-      idx = x->size[0];
+      if (idx < rt) {
+        rt = idx;
+      }
+
       nInt2 = y->size[0];
-      y->size[0] = idx;
+      y->size[0] = (int)varargin_1;
       emxEnsureCapacity((emxArray__common *)y, nInt2, sizeof(creal_T));
+      if ((int)varargin_1 > x->size[0]) {
+        ihi = y->size[0];
+        nInt2 = y->size[0];
+        y->size[0] = ihi;
+        emxEnsureCapacity((emxArray__common *)y, nInt2, sizeof(creal_T));
+        for (nInt2 = 0; nInt2 < ihi; nInt2++) {
+          y->data[nInt2].re = 0.0;
+          y->data[nInt2].im = 0.0;
+        }
+      }
+
       idx = 0;
-      for (ihi = 0; ihi + 1 <= rt; ihi++) {
-        nt_re = wwc->data[(n1 + ihi) - 1].re;
-        nt_im = wwc->data[(n1 + ihi) - 1].im;
-        y->data[ihi].re = nt_re * x->data[idx];
-        y->data[ihi].im = nt_im * -x->data[idx];
+      for (j = 0; j + 1 <= rt; j++) {
+        nt_re = wwc->data[((int)varargin_1 + j) - 1].re;
+        nt_im = wwc->data[((int)varargin_1 + j) - 1].im;
+        y->data[j].re = nt_re * x->data[idx];
+        y->data[j].im = nt_im * -x->data[idx];
         idx++;
       }
 
-      while (rt + 1 <= n1) {
+      while (rt + 1 <= (int)varargin_1) {
         y->data[rt].re = 0.0;
         y->data[rt].im = 0.0;
         rt++;
       }
 
-      emxInit_creal_T(&fy, 1);
-      emxInit_creal_T(&fv, 1);
       r2br_r2dit_trig_impl(y, N2blue, costab, sintab, fy);
       r2br_r2dit_trig(wwc, N2blue, costab, sintab, fv);
       nInt2 = fy->size[0];
@@ -318,31 +357,28 @@ void fft(const emxArray_real_T *x, emxArray_creal_T *y)
 
       b_r2br_r2dit_trig(fy, N2blue, costab, sintabinv, fv);
       idx = 0;
-      ihi = x->size[0] - 1;
-      emxFree_creal_T(&fy);
-      while (ihi + 1 <= wwc->size[0]) {
-        nt_re = wwc->data[ihi].re;
-        fv_re = fv->data[ihi].re;
-        nt_im = wwc->data[ihi].im;
-        fv_im = fv->data[ihi].im;
-        temp_re = wwc->data[ihi].re;
-        temp_im = fv->data[ihi].im;
-        wwc_im = wwc->data[ihi].im;
-        b_fv_re = fv->data[ihi].re;
+      for (j = (int)varargin_1 - 1; j + 1 <= wwc->size[0]; j++) {
+        nt_re = wwc->data[j].re;
+        fv_re = fv->data[j].re;
+        nt_im = wwc->data[j].im;
+        fv_im = fv->data[j].im;
+        temp_re = wwc->data[j].re;
+        temp_im = fv->data[j].im;
+        wwc_im = wwc->data[j].im;
+        b_fv_re = fv->data[j].re;
         y->data[idx].re = nt_re * fv_re + nt_im * fv_im;
         y->data[idx].im = temp_re * temp_im - wwc_im * b_fv_re;
         idx++;
-        ihi++;
       }
-
-      emxFree_creal_T(&fv);
-      emxFree_creal_T(&wwc);
     }
-
-    emxFree_real_T(&sintabinv);
-    emxFree_real_T(&sintab);
-    emxFree_real_T(&costab);
   }
+
+  emxFree_creal_T(&fv);
+  emxFree_creal_T(&fy);
+  emxFree_creal_T(&wwc);
+  emxFree_real_T(&sintabinv);
+  emxFree_real_T(&sintab);
+  emxFree_real_T(&costab);
 }
 
 /*

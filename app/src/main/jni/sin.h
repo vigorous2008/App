@@ -1,12 +1,12 @@
 /*
- * File: any.h
+ * File: sin.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 12:21:32
+ * C/C++ source code generated on  : 07-Nov-2017 15:17:32
  */
 
-#ifndef ANY_H
-#define ANY_H
+#ifndef SIN_H
+#define SIN_H
 
 /* Include Files */
 #include <math.h>
@@ -15,15 +15,15 @@
 #include <string.h>
 #include "rt_nonfinite.h"
 #include "rtwtypes.h"
-#include "extmessage_types.h"
+#include "extmessage2_types.h"
 
 /* Function Declarations */
-extern boolean_T any(const emxArray_boolean_T *x);
+extern void b_sin(emxArray_real_T *x);
 
 #endif
 
 /*
- * File trailer for any.h
+ * File trailer for sin.h
  *
  * [EOF]
  */

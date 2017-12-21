@@ -1,12 +1,12 @@
 /*
- * File: extmessage_emxAPI.h
+ * File: extmessage2_emxAPI.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 12:21:32
+ * C/C++ source code generated on  : 07-Nov-2017 15:17:32
  */
 
-#ifndef EXTMESSAGE_EMXAPI_H
-#define EXTMESSAGE_EMXAPI_H
+#ifndef EXTMESSAGE2_EMXAPI_H
+#define EXTMESSAGE2_EMXAPI_H
 
 /* Include Files */
 #include <math.h>
@@ -15,7 +15,7 @@
 #include <string.h>
 #include "rt_nonfinite.h"
 #include "rtwtypes.h"
-#include "extmessage_types.h"
+#include "extmessage2_types.h"
 
 /* Function Declarations */
 extern emxArray_char_T *emxCreateND_char_T(int numDimensions, int *size);
@@ -36,7 +36,7 @@ extern void emxInitArray_real_T(emxArray_real_T **pEmxArray, int numDimensions);
 #endif
 
 /*
- * File trailer for extmessage_emxAPI.h
+ * File trailer for extmessage2_emxAPI.h
  *
  * [EOF]
  */

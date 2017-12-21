@@ -1,13 +1,13 @@
 ###########################################################################
-## Makefile generated for MATLAB file/project 'extmessage'. 
+## Makefile generated for MATLAB file/project 'extmessage2'. 
 ## 
-## Makefile     : extmessage_rtw.mk
-## Generated on : Wed Oct 25 12:21:40 2017
+## Makefile     : extmessage2_rtw.mk
+## Generated on : Tue Nov 07 14:51:06 2017
 ## MATLAB Coder version: 3.3 (R2017a)
 ## 
 ## Build Info:
 ## 
-## Final product: $(RELATIVE_PATH_TO_ANCHOR)extmessage.a
+## Final product: $(RELATIVE_PATH_TO_ANCHOR)extmessage2.a
 ## Product type : static-library
 ## 
 ###########################################################################
@@ -21,14 +21,14 @@
 # MAKEFILE                Name of this makefile
 # COMPUTER                Computer type. See the MATLAB "computer" command.
 
-PRODUCT_NAME              = extmessage
-MAKEFILE                  = extmessage_rtw.mk
+PRODUCT_NAME              = extmessage2
+MAKEFILE                  = extmessage2_rtw.mk
 COMPUTER                  = PCWIN64
 MATLAB_ROOT               = C:\PROGRA~1\MATLAB\R2017a
 MATLAB_BIN                = C:\PROGRA~1\MATLAB\R2017a\bin
 MATLAB_ARCH_BIN           = C:\PROGRA~1\MATLAB\R2017a\binglnxa64
 MASTER_ANCHOR_DIR         = 
-START_DIR                 = D:\matlab_m\1
+START_DIR                 = D:\matlab_m\3
 ARCH                      = win64
 RELATIVE_PATH_TO_ANCHOR   = .
 C_STANDARD_OPTS           = 
@@ -142,7 +142,7 @@ MAKE_EXT            = .do
 ## OUTPUT INFO
 ###########################################################################
 
-PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)extmessage.a
+PRODUCT = $(RELATIVE_PATH_TO_ANCHOR)extmessage2.a
 PRODUCT_TYPE = "static-library"
 BUILD_TYPE = "Static Library"
 
@@ -150,7 +150,7 @@ BUILD_TYPE = "Static Library"
 ## INCLUDE PATHS
 ###########################################################################
 
-INCLUDES_BUILDINFO = -ccflags$(START_DIR)codegenlibextmessage -ccflags$(START_DIR) -ccflags$(MATLAB_ROOT)externinclude -ccflags$(MATLAB_ROOT)simulinkinclude -ccflags$(MATLAB_ROOT)rtwcsrc -ccflags$(MATLAB_ROOT)rtwcsrcext_modecommon -ccflags$(MATLAB_ROOT)rtwcert
+INCLUDES_BUILDINFO = -ccflags$(START_DIR)codegenlibextmessage2 -ccflags$(START_DIR) -ccflags$(MATLAB_ROOT)externinclude -ccflags$(MATLAB_ROOT)simulinkinclude -ccflags$(MATLAB_ROOT)rtwcsrc -ccflags$(MATLAB_ROOT)rtwcsrcext_modecommon -ccflags$(MATLAB_ROOT)rtwcert
 
 INCLUDES = 
 
@@ -158,7 +158,7 @@ INCLUDES =
 ## DEFINES
 ###########################################################################
 
-DEFINES_STANDARD = MODEL=extmessage HAVESTDIO USE_RTMODEL
+DEFINES_STANDARD = MODEL=extmessage2 HAVESTDIO USE_RTMODEL
 
 DEFINES = 
 
@@ -166,7 +166,7 @@ DEFINES =
 ## SOURCE FILES
 ###########################################################################
 
-SRCS = $(START_DIR)codegenlibextmessageextmessage_initialize.c $(START_DIR)codegenlibextmessageextmessage_terminate.c $(START_DIR)codegenlibextmessageextmessage.c $(START_DIR)codegenlibextmessagefft.c $(START_DIR)codegenlibextmessagefilter.c $(START_DIR)codegenlibextmessageifft.c $(START_DIR)codegenlibextmessagelx_smooth.c $(START_DIR)codegenlibextmessagediff.c $(START_DIR)codegenlibextmessageany.c $(START_DIR)codegenlibextmessagefilterpointer.c $(START_DIR)codegenlibextmessagereturnmsg.c $(START_DIR)codegenlibextmessageextmessage_emxutil.c $(START_DIR)codegenlibextmessageextmessage_emxAPI.c $(START_DIR)codegenlibextmessagert_nonfinite.c $(START_DIR)codegenlibextmessagertGetNaN.c $(START_DIR)codegenlibextmessagertGetInf.c
+SRCS = $(START_DIR)codegenlibextmessage2extmessage2_initialize.c $(START_DIR)codegenlibextmessage2extmessage2_terminate.c $(START_DIR)codegenlibextmessage2extmessage2.c $(START_DIR)codegenlibextmessage2highp.c $(START_DIR)codegenlibextmessage2fft.c $(START_DIR)codegenlibextmessage2sin.c $(START_DIR)codegenlibextmessage2xcorr.c $(START_DIR)codegenlibextmessage2ifft.c $(START_DIR)codegenlibextmessage2diff.c $(START_DIR)codegenlibextmessage2extmessage2_emxutil.c $(START_DIR)codegenlibextmessage2extmessage2_emxAPI.c $(START_DIR)codegenlibextmessage2rt_nonfinite.c $(START_DIR)codegenlibextmessage2rtGetNaN.c $(START_DIR)codegenlibextmessage2rtGetInf.c
 
 ALL_SRCS = 
 
@@ -174,7 +174,7 @@ ALL_SRCS =
 ## OBJECTS
 ###########################################################################
 
-OBJS = extmessage_initialize.o extmessage_terminate.o extmessage.o fft.o filter.o ifft.o lx_smooth.o diff.o any.o filterpointer.o returnmsg.o extmessage_emxutil.o extmessage_emxAPI.o rt_nonfinite.o rtGetNaN.o rtGetInf.o
+OBJS = extmessage2_initialize.o extmessage2_terminate.o extmessage2.o highp.o fft.o sin.o xcorr.o ifft.o diff.o extmessage2_emxutil.o extmessage2_emxAPI.o rt_nonfinite.o rtGetNaN.o rtGetInf.o
 
 ALL_OBJS = 
 
@@ -281,11 +281,11 @@ execute : download
 	  -o "$@" $(subst ,/,"$<")
 
 
-%.o : $(START_DIR)codegenlibextmessage%.c
+%.o : $(START_DIR)codegenlibextmessage2%.c
 	   "$@" $(subst ,/,"$<")
 
 
-%.o : $(START_DIR)codegenlibextmessage%.cpp
+%.o : $(START_DIR)codegenlibextmessage2%.cpp
 	  -o "$@" $(subst ,/,"$<")
 
 
@@ -297,67 +297,59 @@ execute : download
 	  -o "$@" $(subst ,/,"$<")
 
 
-extmessage_initialize.o : $(START_DIR)codegenlibextmessageextmessage_initialize.c
+extmessage2_initialize.o : $(START_DIR)codegenlibextmessage2extmessage2_initialize.c
 	   "$@" $(subst ,/,"$<")
 
 
-extmessage_terminate.o : $(START_DIR)codegenlibextmessageextmessage_terminate.c
+extmessage2_terminate.o : $(START_DIR)codegenlibextmessage2extmessage2_terminate.c
 	   "$@" $(subst ,/,"$<")
 
 
-extmessage.o : $(START_DIR)codegenlibextmessageextmessage.c
+extmessage2.o : $(START_DIR)codegenlibextmessage2extmessage2.c
 	   "$@" $(subst ,/,"$<")
 
 
-fft.o : $(START_DIR)codegenlibextmessagefft.c
+highp.o : $(START_DIR)codegenlibextmessage2highp.c
 	   "$@" $(subst ,/,"$<")
 
 
-filter.o : $(START_DIR)codegenlibextmessagefilter.c
+fft.o : $(START_DIR)codegenlibextmessage2fft.c
 	   "$@" $(subst ,/,"$<")
 
 
-ifft.o : $(START_DIR)codegenlibextmessageifft.c
+sin.o : $(START_DIR)codegenlibextmessage2sin.c
 	   "$@" $(subst ,/,"$<")
 
 
-lx_smooth.o : $(START_DIR)codegenlibextmessagelx_smooth.c
+xcorr.o : $(START_DIR)codegenlibextmessage2xcorr.c
 	   "$@" $(subst ,/,"$<")
 
 
-diff.o : $(START_DIR)codegenlibextmessagediff.c
+ifft.o : $(START_DIR)codegenlibextmessage2ifft.c
 	   "$@" $(subst ,/,"$<")
 
 
-any.o : $(START_DIR)codegenlibextmessageany.c
+diff.o : $(START_DIR)codegenlibextmessage2diff.c
 	   "$@" $(subst ,/,"$<")
 
 
-filterpointer.o : $(START_DIR)codegenlibextmessagefilterpointer.c
+extmessage2_emxutil.o : $(START_DIR)codegenlibextmessage2extmessage2_emxutil.c
 	   "$@" $(subst ,/,"$<")
 
 
-returnmsg.o : $(START_DIR)codegenlibextmessagereturnmsg.c
+extmessage2_emxAPI.o : $(START_DIR)codegenlibextmessage2extmessage2_emxAPI.c
 	   "$@" $(subst ,/,"$<")
 
 
-extmessage_emxutil.o : $(START_DIR)codegenlibextmessageextmessage_emxutil.c
+rt_nonfinite.o : $(START_DIR)codegenlibextmessage2rt_nonfinite.c
 	   "$@" $(subst ,/,"$<")
 
 
-extmessage_emxAPI.o : $(START_DIR)codegenlibextmessageextmessage_emxAPI.c
+rtGetNaN.o : $(START_DIR)codegenlibextmessage2rtGetNaN.c
 	   "$@" $(subst ,/,"$<")
 
 
-rt_nonfinite.o : $(START_DIR)codegenlibextmessagert_nonfinite.c
-	   "$@" $(subst ,/,"$<")
-
-
-rtGetNaN.o : $(START_DIR)codegenlibextmessagertGetNaN.c
-	   "$@" $(subst ,/,"$<")
-
-
-rtGetInf.o : $(START_DIR)codegenlibextmessagertGetInf.c
+rtGetInf.o : $(START_DIR)codegenlibextmessage2rtGetInf.c
 	   "$@" $(subst ,/,"$<")
 
 

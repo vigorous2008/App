@@ -4,9 +4,9 @@
 #include <jni.h>
 #include<android/log.h>
 #include "cn_iviking_app_jni_Detector.h"
-#include "extmessage.h"
-#include "extmessage_emxAPI.h"
-#include "extmessage_initialize.h"
+#include "extmessage2.h"
+#include "extmessage2_emxAPI.h"
+#include "extmessage2_initialize.h"
 #include "math.h"
 #include <string.h>
 #define LOG " WaterMark Detector"// 这个是自定义的LOG的标识  
@@ -41,7 +41,8 @@ static emxArray_real_T *argInit_Unboundedx1_real_T(unsigned char * buf,int size)
         unsigned char bl = buf[2 * i];
         unsigned char bh = buf[2 * i + 1];
         short s= (short)((bh&0x00FF)<<8|bl&0x00FF);
-        result->data[i] = round((double)s*10000/32768)/10000;
+       // result->data[i] = round((double)s*10000/32768)/10000;
+        result->data[i] = (double)s/32768.0;
     } 
 
     return result;
@@ -56,7 +57,7 @@ JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_Detector_getSymbol
    // LOGD("btn_fftw_init()");
   //  LOGI( "revcieve: %l ",args2);
 
-    extmessage_initialize();
+    extmessage2_initialize();
     emxArray_char_T* msg;
     emxInitArray_char_T(&msg, 2);
     jbyte *bytes = (*env)->GetByteArrayElements(env,arr,0);
@@ -65,7 +66,7 @@ JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_Detector_getSymbol
     emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2);//音频流数据
 
     //emxCreateWrapper_real_T((double*)buf, a / (sizeof(double) / sizeof(char)), 1);
-    extmessage(data, 44100, 1, msg);
+    extmessage2(data, 44100, 1, msg);
 
 
     jbyteArray array = (*env)->NewByteArray(env,msg->size[1]);

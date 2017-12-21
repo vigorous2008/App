@@ -1,19 +1,20 @@
 package cn.iviking.app;
 
-import android.content.res.Resources;
+import android.media.AudioFormat;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.util.Log;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,24 +24,14 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.IOException;
 import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
 
-
-import android.content.Context;
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.MediaRecorder;
-import cn.iviking.app.jni.Detector;
 import cn.iviking.app.audio.IvikingAudio;
+import cn.iviking.app.jni.Detector;
 public class MainActivity extends AppCompatActivity {
     PipedInputStream in;
     boolean isRecord;
@@ -63,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
        tv = (TextView)findViewById(R.id.tv);
         tv.setMovementMethod(ScrollingMovementMethod.getInstance());
        // byte[] data = new byte[1024*1024];
-        /*
+
        String audioDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/iviking/";
         File dir = new File(audioDirectory);
         if(dir.isDirectory()){
@@ -99,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 tv.append(mark);
             }
         }
-    */
+
 
 
         Log.i("AAAA","00000000000---0000000000");

@@ -1,12 +1,12 @@
 /*
- * File: extmessage.h
+ * File: extmessage2.h
  *
  * MATLAB Coder version            : 3.3
- * C/C++ source code generated on  : 25-Oct-2017 12:21:32
+ * C/C++ source code generated on  : 07-Nov-2017 15:17:32
  */
 
-#ifndef EXTMESSAGE_H
-#define EXTMESSAGE_H
+#ifndef EXTMESSAGE2_H
+#define EXTMESSAGE2_H
 
 /* Include Files */
 #include <math.h>
@@ -15,16 +15,16 @@
 #include <string.h>
 #include "rt_nonfinite.h"
 #include "rtwtypes.h"
-#include "extmessage_types.h"
+#include "extmessage2_types.h"
 
 /* Function Declarations */
-extern void extmessage(const emxArray_real_T *data, int fs, int channel,
+extern void extmessage2(const emxArray_real_T *data, int fs, int channel,
   emxArray_char_T *msg);
 
 #endif
 
 /*
- * File trailer for extmessage.h
+ * File trailer for extmessage2.h
  *
  * [EOF]
  */
