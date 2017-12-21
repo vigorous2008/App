@@ -53,7 +53,7 @@ JNIEXPORT jstring JNICALL Java_cn_iviking_app_jni_Detector_getString
 }
 
 JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_Detector_getSymbol
-        (JNIEnv *env, jobject obj, jbyteArray arr, jlong args1, jlong args2, jstring args3, jstring args4){
+        (JNIEnv *env, jobject obj, jbyteArray arr, jlong len, jlong sf, jlong jBitsPerSample, jstring args4){
    // LOGD("btn_fftw_init()");
   //  LOGI( "revcieve: %l ",args2);
 
@@ -63,10 +63,10 @@ JNIEXPORT jbyteArray JNICALL Java_cn_iviking_app_jni_Detector_getSymbol
     jbyte *bytes = (*env)->GetByteArrayElements(env,arr,0);
 
     //     emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2-44);//音频文件数据，需要减去wav头
-    emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,args2);//音频流数据
+    emxArray_real_T *data =  argInit_Unboundedx1_real_T((unsigned char*)bytes,len);//音频流数据
 
     //emxCreateWrapper_real_T((double*)buf, a / (sizeof(double) / sizeof(char)), 1);
-    extmessage2(data, 44100, 1, msg);
+    extmessage2(data, sf, 1, msg);
 
 
     jbyteArray array = (*env)->NewByteArray(env,msg->size[1]);

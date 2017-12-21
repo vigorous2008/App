@@ -16,14 +16,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.io.PipedInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -54,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
        tv = (TextView)findViewById(R.id.tv);
         tv.setMovementMethod(ScrollingMovementMethod.getInstance());
        // byte[] data = new byte[1024*1024];
-
+    /*
        String audioDirectory = Environment.getExternalStorageDirectory().getAbsolutePath()+"/iviking/";
         File dir = new File(audioDirectory);
         if(dir.isDirectory()){
@@ -80,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 byte[] audioData = swapStream.toByteArray();
                 Log.i("AAAA",String.format("pcm length %d",audioData.length) );
-                byte[] byteArr = new Detector().getSymbol(audioData,44100,audioData.length,"0","0");
+                byte[] byteArr = new Detector().getSymbol(audioData,audioData.length,44100,16,"0");
                 String mark = "";
                 for(int a=0;a<byteArr.length;a++){
                    // Log.i("watermark in char",String.format(" %c",byteArr[a]));
@@ -91,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
+ */
 
         Log.i("AAAA","00000000000---0000000000");
         handler = new Handler(){
@@ -191,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                         fos.flush();
                         fos.close();
 
-                        byte[] markArr = new Detector().getSymbol(buffer, frequency, buffer.length, "", "");
+                        byte[] markArr = new Detector().getSymbol(buffer, buffer.length, frequency, 16, "");
                         for(int a=0;a<markArr.length;a++){
                             //Log.i("watermark in char",String.format(" %c",markArr[a]));
                             hols+= String.format("%c",markArr[a]);

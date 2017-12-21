@@ -16,13 +16,13 @@ public class Detector {
     public native String getString();
 
     /**
-     * @param audioData 音频PCM数据
-     * @param sf 采样率
-     * @param length 数据长度
-     * @param p2 扩展参数
+     * @param audioData PCM数据buff，注意，不能有WAVE头信息
+     * @param length pcm数据的长度，单位是BYTE
+     * @param sf 采样率，必须为48000或44100
+     * @param jBitsPerSample 采样深度，必须为16
      * @param p3 扩展参数
      * @return 返回音频数据中提取出的水印
      */
 
-    public native byte[] getSymbol(byte[] audioData, long sf, long length, String p2,String p3);
+    public native byte[] getSymbol(byte[] audioData, long length, long sf, long jBitsPerSample,String p3);
 }
